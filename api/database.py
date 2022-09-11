@@ -4,12 +4,8 @@ from sqlalchemy.orm import sessionmaker
 
 SQLALCHEMY_DATABASE_URL = "postgresql://shammah2:secret@localhost/planar"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL
-)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
-
-

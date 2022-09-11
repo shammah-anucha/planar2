@@ -8,16 +8,18 @@ from crud import get_db
 from sqlalchemy.orm import Session
 
 from dotenv import load_dotenv
-load_dotenv('.env')
+
+load_dotenv(".env")
 
 
 class Envs:
-    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
-    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
-    MAIL_FROM = os.getenv('MAIL_FROM')
-    MAIL_PORT = int(os.getenv('MAIL_PORT'))
-    MAIL_SERVER = os.getenv('MAIL_SERVER')
-    MAIL_FROM_NAME = os.getenv('MAIN_FROM_NAME')
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    MAIL_FROM = os.getenv("MAIL_FROM")
+    MAIL_PORT = int(os.getenv("MAIL_PORT"))
+    MAIL_SERVER = os.getenv("MAIL_SERVER")
+    MAIL_FROM_NAME = os.getenv("MAIN_FROM_NAME")
+
 
 conf = ConnectionConfig(
     MAIL_USERNAME=Envs.MAIL_USERNAME,
@@ -29,40 +31,34 @@ conf = ConnectionConfig(
     MAIL_TLS=True,
     MAIL_SSL=False,
     USE_CREDENTIALS=True,
-    TEMPLATE_FOLDER="./templates/email"
+    TEMPLATE_FOLDER="./templates/email",
 )
+
 
 async def send_email_async(subject: str, email_to: str, body: str):
     message = MessageSchema(
-        subject=subject,
-        recipients=[email_to],
-        body=body,
-        subtype='html'
+        subject=subject, recipients=[email_to], body=body, subtype="html"
     )
     fm = FastMail(conf)
-    await fm.send_message(message, template_name='email.html')
+    await fm.send_message(message, template_name="email.html")
 
-def send_email_background(background_tasks: BackgroundTasks, subject: str, email_to: List[str], body: str):
+
+def send_email_background(
+    background_tasks: BackgroundTasks, subject: str, email_to: List[str], body: str
+):
     message = MessageSchema(
-        subject=subject,
-        recipients=email_to,
-        body=body,
-        subtype='html'
+        subject=subject, recipients=email_to, body=body, subtype="html"
     )
     fm = FastMail(conf)
     background_tasks.add_task(fm.send_message, message, template_name="email.html")
 
 
 def collect_email_db(db: Session):
-    for user in db.query(models.User).all(): 
-        return models.User.email     
+    for user in db.query(models.User).all():
+        return models.User.email
         # if models.User.unavailabilities is None:
-            
-        
+
     # all_user_id = db.query(models.User).filter(models.User.user_id).all()
     # for user_id in all_user_id:
     #     if user_id not in models.Unavailabilities.user_id:
     #         return user_id
-    
-
-    

@@ -3,12 +3,15 @@ from typing import Any, List, Union, Optional
 from pydantic import BaseModel, EmailStr, HttpUrl
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+
 # class TokenData(BaseModel):
 #     username: Union[str, None] = None
+
 
 class TokenPayload(BaseModel):
     sub: Optional[int] = None
@@ -25,8 +28,10 @@ class EventBase(BaseModel):
     # tags: Optional[List[str]]
     # image:Optional[HttpUrl]
 
+
 class EventCreate(EventBase):
     pass
+
 
 class Event(EventBase):
     event_id: int
@@ -35,11 +40,14 @@ class Event(EventBase):
     class Config:
         orm_mode = True
 
+
 class RosterBase(BaseModel):
     pass
 
+
 class RosterCreate(RosterBase):
     pass
+
 
 class Roster(RosterBase):
     roster_id: int
@@ -50,7 +58,6 @@ class Roster(RosterBase):
 
     class Config:
         orm_mode = True
-
 
 
 # users
@@ -71,14 +78,10 @@ class UserCreate(UserBase):
     email: EmailStr
     password: str
 
+
 # Properties to receive via API on update
 class UserUpdate(UserBase):
     password: Optional[str] = None
-
-
-
-
-
 
 
 # unavailability
@@ -86,10 +89,10 @@ class UnavailabilityBase(BaseModel):
     start_date: date
     end_date: date
 
+
 class Unavailability(UnavailabilityBase):
     aval_id: int
-    
-    
+
     class Config:
         orm_mode = True
 
@@ -102,17 +105,15 @@ class UserInDBBase(UserBase):
     user_id: int
     disabled: bool
     event: List[Event] = []
-    unavailabilities: List[Unavailability]=[]
+    unavailabilities: List[Unavailability] = []
 
     class Config:
         orm_mode = True
 
-    
 
 # Additional properties to return via API
 class User(UserInDBBase):
     pass
-
 
 
 # Additional properties stored in DB
@@ -120,20 +121,22 @@ class UserInDB(UserInDBBase):
     hashed_password: str
 
 
-
 class InviteStatus(BaseModel):
-    pass       
+    pass
 
 
 class InviteUser(BaseModel):
     date_of_invite: date
     date_of_response: date
 
+
 class DepartmentBase(BaseModel):
     deptname: str
 
+
 class DepartmentCreate(DepartmentBase):
     pass
+
 
 class Department(DepartmentBase):
     dept_id: int
@@ -141,7 +144,8 @@ class Department(DepartmentBase):
     class Config:
         orm_mode = True
 
-#db
+
+# db
 @as_declarative()
 class Base:
     id: Any
