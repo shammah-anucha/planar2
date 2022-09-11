@@ -1,9 +1,10 @@
+from email.policy import default
 from enum import unique
 from typing import List
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, Time, Table
 from sqlalchemy.orm import relationship, deferred
 from pydantic import BaseModel, EmailStr, HttpUrl
-
+from datetime import datetime
 from database import Base
 
 
@@ -112,6 +113,18 @@ class UserDepartment(Base):
     userdept_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.user_id"))
     dept_id = Column(Integer, ForeignKey("departments.dept_id"))
+
+
+class Notification(Base):
+    __tablename__ = "notification"
+
+    notification_type = Column(Integer, primary_key=True, index=True)
+    to_user = Column(Integer, ForeignKey("users.user_id"))
+    from_user = Column(Integer, ForeignKey("users.user_id"))
+    accept = Column(String)
+    decline = Column(String)
+    date = Column(Date, default=datetime.today())
+    user_has_seen = Column(Boolean, default=False)
 
 
 # class DeletedUsers(Base):
