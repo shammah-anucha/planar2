@@ -2,18 +2,17 @@ from email import message
 from multiprocessing import Event
 from xml.dom import ValidationErr
 from sqlalchemy.orm import Session
-import models, schemas
-from schemas import UserCreate, UserBase, TokenPayload, Base
+from api import models, schemas
+from .schemas import TokenPayload, Base
 
-from datetime import datetime, date, time, timedelta
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.encoders import jsonable_encoder
+from datetime import datetime, timedelta
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from typing import Optional, List, TypeVar, Union, Any
+from typing import Optional, TypeVar, Union, Any
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 import secrets
-from database import SessionLocal
+from .database import SessionLocal
 import pdb
 
 

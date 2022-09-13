@@ -2,14 +2,14 @@ import os
 from fastapi import BackgroundTasks, Depends
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from typing import Optional, List
-import crud, models
-from crud import get_db
+from api import crud, models
+from .crud import get_db
 
 from sqlalchemy.orm import Session
 
 from dotenv import load_dotenv
 
-load_dotenv(".env")
+load_dotenv("api/.env")
 
 
 class Envs:
@@ -31,7 +31,7 @@ conf = ConnectionConfig(
     MAIL_TLS=True,
     MAIL_SSL=False,
     USE_CREDENTIALS=True,
-    TEMPLATE_FOLDER="./templates/email",
+    TEMPLATE_FOLDER="api/templates/email",
 )
 
 

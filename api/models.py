@@ -5,7 +5,7 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, Time,
 from sqlalchemy.orm import relationship, deferred
 from pydantic import BaseModel, EmailStr, HttpUrl
 from datetime import datetime
-from database import Base
+from .database import Base
 
 
 class Roster(Base):
