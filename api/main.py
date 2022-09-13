@@ -3,7 +3,7 @@ from datetime import timedelta, date
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from crud import authenticate_user, create_access_token, get_db
+from crud import authenticate_user, create_access_token, get_db, send_notification
 from schemas import Token
 import crud, models, schemas, send_email
 from database import SessionLocal, engine
@@ -198,3 +198,8 @@ def send_emails_by_dept(
     )
     return "Success"
     # TODO remove unavailable emails that have passed the time frame
+
+
+@app.get("/user/notification/{from_user}/{to_user}")
+def notification(from_user: int, to_user: int, db: Session = Depends(get_db)):
+    return crud.send_notification(from_user=from_user, db=db, to_user=to_user)

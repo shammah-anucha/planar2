@@ -1,3 +1,4 @@
+from email import message
 from multiprocessing import Event
 from xml.dom import ValidationErr
 from sqlalchemy.orm import Session
@@ -253,3 +254,30 @@ def get_email_in_department(dept_id: int, db: Session):
         email = "".join(list(email))
         emails.append(email)
     return emails
+
+
+# send notifications
+
+
+def assign_message(db: Session, user_id: int):
+    message = "You have been invited to serve"
+    db_message = models.Messages(user_id=user_id, message=message)
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message
+
+
+def send_notification(from_user: int, db: Session, to_user=int):
+    admin = (
+        db.query(models.User.is_admin)
+        .filter(models.User.user_id == from_user)
+        .filter(models.User.is_admin == "true")
+        .first()
+    )
+    # if not user:
+    #     raise HTTPException(status_code=)
+    if admin:
+        return assign_message(user_id=to_user, db=db)
+    else:
+        return "User doesn't have enough Priviledges"

@@ -127,6 +127,14 @@ class Notification(Base):
     user_has_seen = Column(Boolean, default=False)
 
 
+class Messages(Base):
+    __tablename__ = "messages"
+
+    msg_id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.user_id"))
+    message = Column(String)
+
+
 # class DeletedUsers(Base):
 #     __tablename__ = "deleted_users"
 
