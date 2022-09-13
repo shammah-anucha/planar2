@@ -1,2 +1,3 @@
 poetry install
-poetry run uvicorn main:app --reload
+
+poetry run uvicorn api.main:app --reload
