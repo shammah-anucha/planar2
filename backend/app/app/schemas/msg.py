@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class MessageBase(BaseModel):
 
-    message: str
+    message: str = "You have been invited to serve"
 
 
 class MessageCreate(MessageBase):

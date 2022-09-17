@@ -43,10 +43,12 @@ ModelType = TypeVar("ModelType", bound=Base)
 
 
 # all was put into a class --done till is_admin
+# transferred
 def disabled(user: models.User) -> bool:
     return user.disabled
 
 
+# transferred
 def is_admin(user: models.User) -> bool:
     return user.is_admin
 
@@ -80,7 +82,7 @@ def create_access_token(
     return encoded_jwt
 
 
-# done
+# transferred
 async def get_current_user(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ) -> models.User:
@@ -98,6 +100,7 @@ async def get_current_user(
     return user
 
 
+# transferred
 async def get_current_active_user(
     current_user: models.User = Depends(get_current_user),
 ) -> models.User:
@@ -106,6 +109,7 @@ async def get_current_active_user(
     return current_user
 
 
+# transferred
 async def get_current_active_admin(
     current_user: models.User = Depends(get_current_user),
 ) -> models.User:
@@ -121,6 +125,7 @@ def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
+# transferred
 def create_user(db: Session, user: schemas.UserCreate) -> models.User:
     db_user = models.User(
         email=user.email,
@@ -141,7 +146,7 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
 
 # def update(db: Session, db_user: models.User, user: Union[UserUpdate, Dict[str, Any]]) -> models.User
 
-
+# transferred
 def authenticate_user(db: Session, email: str, password: str) -> Optional[models.User]:
     user = get_user_by_email(db, email=email)
     if not user:
@@ -151,6 +156,7 @@ def authenticate_user(db: Session, email: str, password: str) -> Optional[models
     return user
 
 
+# transferred
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
@@ -162,7 +168,7 @@ def get_events(db: Session, skip: int = 0, limit: int = 100):
 # def get_event_by_name(db: Session, name:str):
 #     return db.query(models.Event).filter(models.Event.name==name).first()
 
-
+# transferred
 def create_event(db: Session, event: schemas.EventCreate):
     db_event = models.Event(
         name=event.name,
@@ -185,11 +191,13 @@ def create_event(db: Session, event: schemas.EventCreate):
 #     db.refresh(db_event)
 #     return db_event
 
+# transferred
 # TODO remove unavailable emails that have passed the time frame
 def get_user_unavailable(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Unavailabilities).offset(skip).limit(limit).all()
 
 
+# transferred
 def set_user_unavailable(db: Session, days: schemas.UnavailabilityCreate, user_id: int):
     db_unavalable_days = models.Unavailabilities(
         start_date=days.start_date, end_date=days.end_date, user_id=user_id
@@ -200,6 +208,7 @@ def set_user_unavailable(db: Session, days: schemas.UnavailabilityCreate, user_i
     return db_unavalable_days
 
 
+# transferred
 def create_department(db: Session, department: schemas.DepartmentCreate):
     db_department = models.Departments(deptname=department.deptname)
     db.add(db_department)
@@ -208,10 +217,12 @@ def create_department(db: Session, department: schemas.DepartmentCreate):
     return db_department
 
 
+# transferred
 def get_department(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Departments).offset(skip).limit(limit).all()
 
 
+# transferred
 def assign_department(db: Session, dept_id: int, user_id: int):
     db_user_dept = models.UserDepartment(user_id=user_id, dept_id=dept_id)
     db.add(db_user_dept)
@@ -220,6 +231,7 @@ def assign_department(db: Session, dept_id: int, user_id: int):
     return db_user_dept
 
 
+# transferred
 def get_dept_id(db: Session, id: Any):
     return (
         db.query(models.Departments.dept_id)
@@ -228,10 +240,12 @@ def get_dept_id(db: Session, id: Any):
     )
 
 
+# transferred
 def get_user_department(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.UserDepartment).offset(skip).limit(limit).all()
 
 
+# transferred
 def get_available_emails(db: Session):
     emails = []
     for email in (
@@ -242,6 +256,7 @@ def get_available_emails(db: Session):
     return emails
 
 
+# transferred
 def get_email_in_department(dept_id: int, db: Session):
     emails = []
     for email, dept_id in (
@@ -257,7 +272,7 @@ def get_email_in_department(dept_id: int, db: Session):
 
 # send notifications
 
-
+# transferred
 def assign_message(db: Session, user_id: int):
     message = "You have been invited to serve"
     db_message = models.Messages(user_id=user_id, message=message)
@@ -267,6 +282,7 @@ def assign_message(db: Session, user_id: int):
     return db_message
 
 
+# transferred
 def send_notification(from_user: int, db: Session, to_user=int):
     admin = (
         db.query(models.User.is_admin)

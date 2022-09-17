@@ -1,33 +1,35 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import Any, List
 from sqlalchemy.orm import Session
-from app import crud, models, schemas
+from app.schemas.users import User, UserCreate
+from app.models.users import User
 from app.api import deps
+from crud import crud_user
 
 
 router = APIRouter()
 
 
-@router.post("/users/", response_model=schemas.User, tags=["users"])
-def create_user(user: schemas.UserCreate, db: Session = Depends(deps.get_db)) -> Any:
+@router.post("/users/", response_model=User, tags=["users"])
+def create_user(user: UserCreate, db: Session = Depends(deps.get_db)) -> Any:
     """Create new user."""
-    db_user = crud.user.get_user_by_email(db, email=user.email)
+    db_user = crud_user.user.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return crud.create_user(db=db, user=user)
+    return crud_user.user.create_user(db=db, user=user)
 
 
 # works
-@router.get("/users/", response_model=List[schemas.User], tags=["users"])
+@router.get("/users/", response_model=List[User], tags=["users"])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(deps.get_db)):
-    users = crud.get_users(db, skip=skip, limit=limit)
+    users = crud_user.user.get_multi_user(db, skip=skip, limit=limit)
     return users
 
 
 # works
-@router.get("/users/{user_id}", response_model=schemas.User, tags=["users"])
+@router.get("/users/{user_id}", response_model=User, tags=["users"])
 def read_user(user_id: int, db: Session = Depends(deps.get_db)):
-    db_user = crud.get_user_id(db, id=user_id)
+    db_user = crud_user.user.get_user_id(db, id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
@@ -35,6 +37,6 @@ def read_user(user_id: int, db: Session = Depends(deps.get_db)):
 
 @router.delete("/users/{user_id}", tags=["users"])
 def delete_user(user_id: int, db: Session = Depends(deps.get_db)):
-    db.query(models.User).filter(models.User.user_id == user_id).delete()
+    db.query(User).filter(User.user_id == user_id).delete()
     db.commit()
     return "Delete Successful"

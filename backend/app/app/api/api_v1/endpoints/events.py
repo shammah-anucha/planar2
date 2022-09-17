@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
-from app.api import crud, schemas
+from fastapi import APIRouter, Depends
+from crud import crud_events
+from schemas import events
 from app.api import deps
 from typing import List
 from sqlalchemy.orm import Session
@@ -10,13 +11,13 @@ router = APIRouter(
 )
 
 # works
-@router.post("/", response_model=schemas.Event)
-def create_event(event: schemas.EventCreate, db: Session = Depends(deps.get_db)):
-    return crud.crud_events.create_event(db=db, event=event)
+@router.post("/", response_model=events.Event)
+def create_event(event: events.EventCreate, db: Session = Depends(deps.get_db)):
+    return crud_events.event.create_event(db=db, event=event)
 
 
 # works
-@router.get("/", response_model=List[schemas.Event])
+@router.get("/", response_model=List[events.Event])
 def read_events(skip: int = 0, limit: int = 100, db: Session = Depends(deps.get_db)):
-    roster = crud.crud_events.get_events(db, skip=skip, limit=limit)
+    roster = crud_events.event.get_multi_events(db, skip=skip, limit=limit)
     return roster
