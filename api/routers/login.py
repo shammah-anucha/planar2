@@ -3,15 +3,15 @@ from fastapi import Depends, HTTPException, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from ..dependencies import get_db
-from api import crud
-from crud import authenticate_user, create_access_token
-from schemas import Token
+from api import crud, schemas
+from ..crud import authenticate_user, create_access_token
+from ..schemas import Token
 
 
-router = APIRouter(prefix="/events", tags=["events"], dependencies=[Depends(get_db)])
+router = APIRouter(prefix="/login", tags=["login"], dependencies=[Depends(get_db)])
 
 # works
-@router.post("/login/access-token", response_model=Token)
+@router.post("/access-token", response_model=Token)
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
