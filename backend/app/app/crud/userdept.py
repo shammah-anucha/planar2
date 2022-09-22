@@ -7,10 +7,12 @@ from sqlalchemy.orm import Session
 from ...app.crud.base import CRUDBase
 from ...app.models.departments import UserDepartment
 from ...app.models.users import User
-from ...app.schemas.userdept import UserDepartmentCreate
+from ...app.schemas.userdept import UserDepartmentCreate, UserDepartmentUpdate
 
 
-class CRUDUserDepartment(CRUDBase[UserDepartmentCreate, UserDepartment]):
+class CRUDUserDepartment(
+    CRUDBase[UserDepartmentCreate, UserDepartment, UserDepartmentUpdate]
+):
     def assign_department(
         self, db: Session, *, obj_in: UserDepartmentCreate
     ) -> UserDepartment:

@@ -5,10 +5,12 @@ from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
 from ...app.models.unavailability import Unavailabilities
-from ...app.schemas.unavailability import UnavailabilityCreate
+from ...app.schemas.unavailability import UnavailabilityCreate, UnavailabilityUpdate
 
 
-class CRUDUnavailability(CRUDBase[Unavailabilities, UnavailabilityCreate]):
+class CRUDUnavailability(
+    CRUDBase[Unavailabilities, UnavailabilityCreate, UnavailabilityUpdate]
+):
     def set_user_unavailable(self, db: Session, *, obj_in: UnavailabilityCreate):
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)

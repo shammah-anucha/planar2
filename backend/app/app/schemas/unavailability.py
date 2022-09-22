@@ -17,3 +17,7 @@ class Unavailability(UnavailabilityBase):
 
 class UnavailabilityCreate(UnavailabilityBase):
     pass
+
+
+class UnavailabilityUpdate(UnavailabilityBase):
+    pass

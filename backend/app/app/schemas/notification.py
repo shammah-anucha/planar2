@@ -13,6 +13,10 @@ class NotificationCreate(NotificationBase):
     pass
 
 
+class NotificationUpdate(NotificationBase):
+    pass
+
+
 class Notification(NotificationBase):
     notification_type: int
     to_user: int

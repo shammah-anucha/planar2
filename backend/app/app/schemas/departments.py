@@ -9,6 +9,10 @@ class DepartmentCreate(DepartmentBase):
     pass
 
 
+class DepartmentUpdate(DepartmentBase):
+    pass
+
+
 class Department(DepartmentBase):
     dept_id: int
 

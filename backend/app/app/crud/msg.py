@@ -5,10 +5,10 @@ from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
 from ...app.models.msg import Messages
-from ...app.schemas.msg import MessageCreate
+from ...app.schemas.msg import MessageCreate, MessageUpdate
 
 
-class CRUDMessage(CRUDBase[Messages, MessageCreate]):
+class CRUDMessage(CRUDBase[Messages, MessageCreate, MessageUpdate]):
     def assign_message(self, db: Session, *, obj_in: MessageCreate):
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)

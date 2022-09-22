@@ -10,6 +10,10 @@ class MessageCreate(MessageBase):
     pass
 
 
+class MessageUpdate(MessageBase):
+    pass
+
+
 class Message(MessageBase):
     msg_id: int
     user_id: int

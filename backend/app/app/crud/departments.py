@@ -5,10 +5,10 @@ from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
 from ...app.models.departments import Departments
-from ...app.schemas.departments import DepartmentCreate
+from ...app.schemas.departments import DepartmentCreate, DepartmentUpdate
 
 
-class CRUDDepartment(CRUDBase[Departments, DepartmentCreate]):
+class CRUDDepartment(CRUDBase[Departments, DepartmentCreate, DepartmentUpdate]):
     def create_department(
         self, db: Session, *, obj_in: DepartmentCreate
     ) -> Departments:

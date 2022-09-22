@@ -11,6 +11,10 @@ class RosterCreate(RosterBase):
     pass
 
 
+class RosterUpdate(RosterBase):
+    pass
+
+
 class Roster(RosterBase):
     roster_id: int
     event_id: int

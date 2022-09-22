@@ -15,6 +15,10 @@ class EventBase(BaseModel):
 
 
 class EventCreate(EventBase):
+    name: str
+
+
+class EventUpdate(EventBase):
     pass
 
 

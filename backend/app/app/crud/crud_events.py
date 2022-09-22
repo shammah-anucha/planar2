@@ -5,10 +5,10 @@ from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
 from ...app.models.events import Event
-from ...app.schemas.events import EventCreate
+from ...app.schemas.events import EventCreate, EventUpdate
 
 
-class CRUDEvent(CRUDBase[Event, EventCreate]):
+class CRUDEvent(CRUDBase[Event, EventCreate, EventUpdate]):
     def create_event(self, db: Session, *, obj_in: EventCreate) -> Event:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)

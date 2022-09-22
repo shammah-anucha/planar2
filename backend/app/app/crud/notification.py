@@ -6,10 +6,10 @@ from sqlalchemy.orm import Session
 from ...app.crud.base import CRUDBase
 from ...app.crud.msg import CRUDMessage
 from ...app.models.users import User
-from ...app.schemas.notification import NotificationCreate
+from ...app.schemas.notification import NotificationCreate, NotificationUpdate
 
 
-class CRUDNotification(CRUDBase[User, NotificationCreate]):
+class CRUDNotification(CRUDBase[User, NotificationCreate, NotificationUpdate]):
     def send_notification(from_user: int, db: Session, to_user=int):
         admin = (
             db.query(User.is_admin)
