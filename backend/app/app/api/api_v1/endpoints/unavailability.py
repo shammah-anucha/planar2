@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
-from crud.unavailability import unavailability
-from crud.emails import crud_email
-from app.api import deps
+from ....crud.unavailability import unavailability
+from ....crud.emails import crud_email
+from .....app.api import deps
 from sqlalchemy.orm import Session
 
 

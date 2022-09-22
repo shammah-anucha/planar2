@@ -3,10 +3,10 @@ from typing import Any, List
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app.crud.base import CRUDBase
-from app.crud.msg import CRUDMessage
-from app.models.users import User
-from app.schemas.notification import NotificationCreate
+from ...app.crud.base import CRUDBase
+from ...app.crud.msg import CRUDMessage
+from ...app.models.users import User
+from ...app.schemas.notification import NotificationCreate
 
 
 class CRUDNotification(CRUDBase[User, NotificationCreate]):

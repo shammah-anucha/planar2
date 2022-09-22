@@ -1,11 +1,10 @@
 from fastapi import APIRouter
 from datetime import date
-from fastapi import Depends, FastAPI
+from fastapi import Depends
 from sqlalchemy.orm import Session
 from api import crud, models, schemas
-from db.session import engine
-from app.api import deps
-from app.api.api_v1.endpoints import (
+from ...api import deps
+from ....app.api.api_v1.endpoints import (
     events,
     users,
     departments,

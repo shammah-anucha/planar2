@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
-from app.api import deps
+from .....app.api import deps
 from sqlalchemy.orm import Session
-from schemas.departments import Department, DepartmentCreate
-from schemas.userdept import UserDepartment
-from app.crud import crud_user, departments, userdept
+from ....schemas.departments import Department, DepartmentCreate
+from ....schemas.userdept import UserDepartment
+from .....app.crud import crud_user, departments, userdept
 
 router = APIRouter(
     prefix="/departments", tags=["departments"], dependencies=[Depends(deps.get_db)]

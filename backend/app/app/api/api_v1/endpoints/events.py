@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
-from crud import crud_events
-from schemas import events
-from app.api import deps
+from ....crud import crud_events
+from ....schemas import events
+from .....app.api import deps
 from typing import List
 from sqlalchemy.orm import Session
 

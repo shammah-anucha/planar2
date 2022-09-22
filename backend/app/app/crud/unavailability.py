@@ -3,9 +3,9 @@ from typing import Any, List
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app.crud.base import CRUDBase
-from app.models.unavailability import Unavailabilities
-from app.schemas.unavailability import UnavailabilityCreate
+from ...app.crud.base import CRUDBase
+from ...app.models.unavailability import Unavailabilities
+from ...app.schemas.unavailability import UnavailabilityCreate
 
 
 class CRUDUnavailability(CRUDBase[Unavailabilities, UnavailabilityCreate]):

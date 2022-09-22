@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app import utils
-from app.api import deps
-from crud.departments import department
-from crud.emails import crud_email
-from crud.userdept import userdept
+from .....app import utils
+from .....app.api import deps
+from ....crud.departments import department
+from ....crud.emails import crud_email
+from ....crud.userdept import userdept
 from typing import List
 from sqlalchemy.orm import Session
 

@@ -6,12 +6,12 @@ from xml.dom import ValidationErr
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
-from app.crud import crud_user
-from app.models.users import User
-from schemas.token import TokenPayload
-from app.core import security
-from app.core.config import settings
-from app.db.session import SessionLocal
+from ...app.crud import crud_user
+from ...app.models.users import User
+from ..schemas.token import TokenPayload
+from ...app.core import security
+from ...app.core.config import settings
+from ...app.db.session import SessionLocal
 
 
 def get_db():

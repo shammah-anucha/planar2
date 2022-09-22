@@ -3,9 +3,9 @@ from typing import Any, List
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app.crud.base import CRUDBase
-from app.models.msg import Messages
-from app.schemas.msg import MessageCreate
+from ...app.crud.base import CRUDBase
+from ...app.models.msg import Messages
+from ...app.schemas.msg import MessageCreate
 
 
 class CRUDMessage(CRUDBase[Messages, MessageCreate]):

@@ -4,8 +4,8 @@ from pydantic import EmailStr
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app.crud.base import CRUDBase
-from app.models.users import User
+from ...app.crud.base import CRUDBase
+from ...app.models.users import User
 
 
 class CRUDEmail(CRUDBase[User]):

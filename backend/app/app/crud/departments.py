@@ -3,9 +3,9 @@ from typing import Any, List
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app.crud.base import CRUDBase
-from app.models.departments import Departments
-from app.schemas.departments import DepartmentCreate
+from ...app.crud.base import CRUDBase
+from ...app.models.departments import Departments
+from ...app.schemas.departments import DepartmentCreate
 
 
 class CRUDDepartment(CRUDBase[Departments, DepartmentCreate]):
