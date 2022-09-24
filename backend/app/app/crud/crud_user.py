@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from ...app.core.security import get_password_hash, verify_password
 from ...app.crud.base import CRUDBase
 from ...app.models.users import Users
-from ...app.schemas.users import UserCreate, UserUpdate
+from ...app.schemas.users import User, UserCreate, UserUpdate
 
 
 class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
@@ -60,11 +60,11 @@ class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
             return None
         return user
 
-    def disabled(self, user: Users) -> bool:
+    def disabled(self, user: User) -> bool:
         return user.disabled
 
-    def is_admin(self, user: Users) -> bool:
+    def is_admin(self, user: User) -> bool:
         return user.is_admin
 
 
-user = CRUDUser(Users)
+user = CRUDUser(User)

@@ -4,7 +4,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
-from ...app.models.unavailability import Unavailabilities
+from ...app.models.users import Unavailabilities
 from ...app.schemas.unavailability import UnavailabilityCreate, UnavailabilityUpdate
 
 

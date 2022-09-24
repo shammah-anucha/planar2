@@ -16,7 +16,7 @@ def create_user(user: UserCreate, db: Session = Depends(deps.get_db)) -> Any:
     db_user = crud_user.user.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return crud_user.user.create_user(db=db, user=user)
+    return crud_user.user.create_user(db=db, user=db_user)
 
 
 # works
