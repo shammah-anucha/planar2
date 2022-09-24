@@ -5,16 +5,16 @@ from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
 from ...app.crud.msg import CRUDMessage
-from ...app.models.users import User
+from ...app.models.users import Users
 from ...app.schemas.notification import NotificationCreate, NotificationUpdate
 
 
-class CRUDNotification(CRUDBase[User, NotificationCreate, NotificationUpdate]):
+class CRUDNotification(CRUDBase[Users, NotificationCreate, NotificationUpdate]):
     def send_notification(from_user: int, db: Session, to_user=int):
         admin = (
-            db.query(User.is_admin)
-            .filter(User.user_id == from_user)
-            .filter(User.is_admin == "true")
+            db.query(Users.is_admin)
+            .filter(Users.user_id == from_user)
+            .filter(Users.is_admin == "true")
             .first()
         )
         # if not user:
@@ -25,4 +25,4 @@ class CRUDNotification(CRUDBase[User, NotificationCreate, NotificationUpdate]):
             return "User doesn't have enough Priviledges"
 
 
-notification = CRUDNotification(User)
+notification = CRUDNotification(Users)

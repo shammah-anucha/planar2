@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
 from ...app.models.departments import UserDepartment
-from ...app.models.users import User
+from ...app.models.users import Users
 from ...app.schemas.userdept import UserDepartmentCreate, UserDepartmentUpdate
 
 
@@ -31,8 +31,8 @@ class CRUDUserDepartment(
     def get_email_in_department(self, dept_id: int, db: Session) -> List[EmailStr]:
         emails = []
         for email, dept_id in (
-            db.query(User.email, UserDepartment.dept_id)
-            .filter(User.user_id == UserDepartment.user_id)
+            db.query(Users.email, UserDepartment.dept_id)
+            .filter(Users.user_id == UserDepartment.user_id)
             .filter(UserDepartment.dept_id == dept_id)
             .all()
         ):

@@ -4,16 +4,16 @@ from pydantic import EmailStr
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from ...app.models.users import User
+from ...app.models.users import Users
 
 
-class CRUDEmail(User):
-    def get_available_emails(self, db: Session) -> List[User.email]:
+class CRUDEmail(EmailStr):
+    def get_available_emails(self, db: Session) -> List[EmailStr]:
         emails = []
-        for email in db.query(User.email).filter(User.unavailabilities == None).all():
+        for email in db.query(Users.email).filter(Users.unavailabilities == None).all():
             email = "\n".join(list(email))
             emails.append(email)
         return emails
 
 
-crud_email = CRUDEmail(User)
+crud_email = CRUDEmail(EmailStr)

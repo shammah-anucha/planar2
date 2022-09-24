@@ -4,16 +4,16 @@ from sqlalchemy.orm import Session
 
 from ...app.core.security import get_password_hash, verify_password
 from ...app.crud.base import CRUDBase
-from ...app.models.users import User
+from ...app.models.users import Users
 from ...app.schemas.users import UserCreate, UserUpdate
 
 
-class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    def get_user_by_email(self, db: Session, email: str) -> Optional[User]:
-        return db.query(User).filter(User.email == email).first()
+class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
+    def get_user_by_email(self, db: Session, email: str) -> Optional[Users]:
+        return db.query(Users).filter(Users.email == email).first()
 
-    def create_user(self, db: Session, obj_in: UserCreate) -> User:
-        db_user = User(
+    def create_user(self, db: Session, obj_in: UserCreate) -> Users:
+        db_user = Users(
             email=obj_in.email,
             username=obj_in.username,
             Firstname=obj_in.Firstname,
@@ -30,8 +30,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return db_user
 
     def update(
-        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
-    ) -> User:
+        self, db: Session, *, db_obj: Users, obj_in: Union[UserUpdate, Dict[str, Any]]
+    ) -> Users:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
@@ -44,15 +44,15 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
     def get_multi_user(
         self, db: Session, *, skip: int = 0, limit: int = 100
-    ) -> List[User]:
+    ) -> List[Users]:
         return db.query(self.model).offset(skip).limit(limit).all()
 
     def get_user_id(self, db: Session, id: Any):
-        return db.query(User).filter(User.user_id == id).first()
+        return db.query(Users).filter(Users.user_id == id).first()
 
     def authenticate_user(
         self, db: Session, *, email: str, password: str
-    ) -> Optional[User]:
+    ) -> Optional[Users]:
         user = self.get_user_by_email(db, email=email)
         if not user:
             return None
@@ -60,11 +60,11 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             return None
         return user
 
-    def disabled(self, user: User) -> bool:
+    def disabled(self, user: Users) -> bool:
         return user.disabled
 
-    def is_admin(self, user: User) -> bool:
+    def is_admin(self, user: Users) -> bool:
         return user.is_admin
 
 
-user = CRUDUser(User)
+user = CRUDUser(Users)

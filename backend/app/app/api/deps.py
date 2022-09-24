@@ -7,7 +7,7 @@ from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
 from ...app.crud import crud_user
-from ...app.models.users import User
+from ...app.models.users import Users
 from ..schemas.token import TokenPayload
 from ...app.core import security
 from ...app.core.config import settings
@@ -30,7 +30,7 @@ oauth2_scheme = OAuth2PasswordBearer(
 # done
 async def get_current_user(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
-) -> User:
+) -> Users:
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
@@ -48,16 +48,16 @@ async def get_current_user(
 
 
 async def get_current_active_user(
-    current_user: User = Depends(get_current_user),
-) -> User:
+    current_user: Users = Depends(get_current_user),
+) -> Users:
     if crud_user.user.disabled(current_user):
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 
 async def get_current_active_admin(
-    current_user: User = Depends(get_current_user),
-) -> User:
+    current_user: Users = Depends(get_current_user),
+) -> Users:
     if not crud_user.user.is_admin(current_user):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"

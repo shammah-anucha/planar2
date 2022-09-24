@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from .unavailability import Unavailabilities
 
 
-class User(Base):
+class Users(Base):
 
     __tablename__ = "users"
 
