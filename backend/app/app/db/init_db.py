@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session
 # from ...app.db import base  # noqa: F401
 
 # from ...app.db.base_class import Base  # noqa
-from ...app.db.session import engine, Base
+# from ...app.db.session import engine, Base
 
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
 # def init_db() -> None:
 # Tables should be created with Alembic migrations
 # But if you don't want to use migrations, create

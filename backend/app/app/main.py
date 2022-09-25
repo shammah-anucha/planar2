@@ -7,7 +7,7 @@ from ..app.db.session import engine
 from ..app.db.base_class import Base
 
 
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"

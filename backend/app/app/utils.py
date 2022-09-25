@@ -27,7 +27,7 @@ conf = ConnectionConfig(
     MAIL_TLS=True,
     MAIL_SSL=False,
     USE_CREDENTIALS=True,
-    TEMPLATE_FOLDER="api/templates/email",
+    TEMPLATE_FOLDER="backend/app/app/email-templates/build/",
 )
 
 

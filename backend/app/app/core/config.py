@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     SQLALCHEMY_DATABASE_URL: Optional[
         PostgresDsn
-    ] = "postgresql://shammah:secret@localhost/planar3"
+    ] = "postgresql://shammah:secret@localhost/planar4"
 
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
