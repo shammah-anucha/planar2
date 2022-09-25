@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from ...app.models.users import Users
 
 
+# TODO to collect emails available today()
 class CRUDEmail(EmailStr):
     def get_available_emails(self, db: Session) -> List[EmailStr]:
         emails = []

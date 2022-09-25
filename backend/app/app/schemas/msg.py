@@ -2,8 +2,7 @@ from pydantic import BaseModel
 
 
 class MessageBase(BaseModel):
-
-    message: str = "You have been invited to serve"
+    msg_id: int
 
 
 class MessageCreate(MessageBase):
@@ -15,7 +14,7 @@ class MessageUpdate(MessageBase):
 
 
 class Message(MessageBase):
-    msg_id: int
+    message: str = "You have been invited to serve"
     user_id: int
 
     class Config:

@@ -4,7 +4,8 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 from ....app.schemas.unavailability import Unavailability, UnavailabilityCreate
 from ....app.crud.unavailability import unavailabilities
-from ....app.crud.notification import notification
+from ....app.crud.notification import send_notification
+from ....app.schemas.notification import NotificationCreate
 from ....app.models.events import Event
 from ....app.api import deps
 from ....app.api.api_v1.endpoints import (
@@ -45,5 +46,9 @@ def set_unavailability(
 
 
 @api_router.get("/user/notification/{from_user}/{to_user}")
-def send_notification(from_user: int, to_user: int, db: Session = Depends(deps.get_db)):
-    return notification.send_notification(from_user=from_user, db=db, to_user=to_user)
+def notification(
+    from_user: int,
+    to_user: int,
+    db: Session = Depends(deps.get_db),
+):
+    return send_notification(from_user=from_user, db=db, to_user=to_user)

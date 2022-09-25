@@ -3,10 +3,11 @@ from datetime import date, datetime
 
 
 class NotificationBase(BaseModel):
-    accept: str
-    decline: str
-    received_date: date
-    user_has_seen: bool
+    # accept: str
+    # decline: str
+    # received_date: date
+    # user_has_seen: bool
+    notification_id: int
 
 
 class NotificationCreate(NotificationBase):
@@ -18,7 +19,6 @@ class NotificationUpdate(NotificationBase):
 
 
 class Notification(NotificationBase):
-    notification_type: int
     to_user: int
     from_user: int
 

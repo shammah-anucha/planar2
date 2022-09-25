@@ -11,13 +11,16 @@ from ...app.schemas.unavailability import UnavailabilityCreate, UnavailabilityUp
 class CRUDUnavailability(
     CRUDBase[Unavailabilities, UnavailabilityCreate, UnavailabilityUpdate]
 ):
-    def set_user_unavailable(self, db: Session, *, obj_in: UnavailabilityCreate):
-        obj_in_data = jsonable_encoder(obj_in)
-        db_obj = self.model(**obj_in_data)
-        db.add(db_obj)
+    def set_user_unavailable(
+        self, db: Session, *, days: UnavailabilityCreate, user_id: int
+    ):
+        db_unavalable_days = self.model(
+            start_date=days.start_date, end_date=days.end_date, user_id=user_id
+        )
+        db.add(db_unavalable_days)
         db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        db.refresh(db_unavalable_days)
+        return db_unavalable_days
 
     # TODO remove unavailable emails that have passed the time frame
     def get_user_unavailable(

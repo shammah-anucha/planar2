@@ -5,7 +5,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 
 from dotenv import load_dotenv
 
-load_dotenv("api/.env")
+load_dotenv("backend/.env")
 
 
 class Envs:

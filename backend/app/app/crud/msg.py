@@ -8,14 +8,10 @@ from ...app.models.msg import Messages
 from ...app.schemas.msg import MessageCreate, MessageUpdate
 
 
-class CRUDMessage(CRUDBase[Messages, MessageCreate, MessageUpdate]):
-    def assign_message(self, db: Session, *, obj_in: MessageCreate):
-        obj_in_data = jsonable_encoder(obj_in)
-        db_obj = self.model(**obj_in_data)
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
-
-
-message = CRUDMessage(Messages)
+def assign_message(db: Session, user_id: int):
+    message = "You have been invited to serve"
+    db_message = Messages(user_id=user_id, message=message)
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message
