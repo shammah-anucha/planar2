@@ -5,14 +5,14 @@ from sqlalchemy.orm import Session
 from ...app.core.security import get_password_hash, verify_password
 from ...app.crud.base import CRUDBase
 from ...app.models.users import Users
-from ...app.schemas.users import User, UserCreate, UserUpdate
+from ...app.schemas.users import UserCreate, UserUpdate
 
 
 class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
     def get_user_by_email(self, db: Session, email: str) -> Optional[Users]:
         return db.query(Users).filter(Users.email == email).first()
 
-    def create_user(self, db: Session, obj_in: UserCreate) -> Users:
+    def create(self, db: Session, *, obj_in: UserCreate) -> Users:
         db_user = Users(
             email=obj_in.email,
             username=obj_in.username,
@@ -60,11 +60,11 @@ class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
             return None
         return user
 
-    def disabled(self, user: User) -> bool:
+    def disabled(self, user: Users) -> bool:
         return user.disabled
 
-    def is_admin(self, user: User) -> bool:
+    def is_admin(self, user: Users) -> bool:
         return user.is_admin
 
 
-user = CRUDUser(User)
+user = CRUDUser(Users)

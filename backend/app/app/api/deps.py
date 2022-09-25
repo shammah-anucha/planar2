@@ -14,7 +14,7 @@ from ...app.core.config import settings
 from ...app.db.session import SessionLocal
 
 
-def get_db():
+def get_db() -> Generator:
     db = SessionLocal()
     try:
         yield db

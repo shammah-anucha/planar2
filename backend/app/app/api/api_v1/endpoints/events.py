@@ -13,7 +13,7 @@ router = APIRouter(
 # works
 @router.post("/", response_model=events.Event)
 def create_event(event: events.EventCreate, db: Session = Depends(deps.get_db)):
-    return crud_events.event.create_event(db=db, event=event)
+    return crud_events.event.create_event(db=db, obj_in=event)
 
 
 # works

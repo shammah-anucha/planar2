@@ -5,19 +5,22 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
-from ...app.models.departments import UserDepartment
+from ...app.models.userdept import UserDepartment
 from ...app.models.users import Users
 from ...app.schemas.userdept import UserDepartmentCreate, UserDepartmentUpdate
 
 
 class CRUDUserDepartment(
-    CRUDBase[UserDepartmentCreate, UserDepartment, UserDepartmentUpdate]
+    CRUDBase[UserDepartment, UserDepartmentCreate, UserDepartmentUpdate]
 ):
     def assign_department(
-        self, db: Session, *, obj_in: UserDepartmentCreate
+        self,
+        db: Session,
+        *,
+        dept_id: UserDepartmentCreate,
+        user_id: UserDepartmentCreate
     ) -> UserDepartment:
-        obj_in_data = jsonable_encoder(obj_in)
-        db_obj = self.model(**obj_in_data)
+        db_obj = self.model(user_id=user_id, dept_id=dept_id)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)

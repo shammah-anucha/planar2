@@ -13,7 +13,7 @@ router = APIRouter(
 # departments
 @router.post("/", response_model=Department)
 def create_department(department: DepartmentCreate, db: Session = Depends(deps.get_db)):
-    return departments.department.create_department(db=db, department=department)
+    return departments.department.create_department(db=db, obj_in=department)
 
 
 @router.get("/user/", response_model=List[Department])

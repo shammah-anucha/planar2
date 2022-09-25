@@ -9,14 +9,14 @@ from ....crud import crud_user
 
 router = APIRouter()
 
-
+# works
 @router.post("/users/", response_model=User, tags=["users"])
-def create_user(user: UserCreate, db: Session = Depends(deps.get_db)) -> Any:
+def create_user(*, users_in: UserCreate, db: Session = Depends(deps.get_db)) -> Any:
     """Create new user."""
-    db_user = crud_user.user.get_user_by_email(db, email=user.email)
-    if db_user:
+    user = crud_user.user.get_user_by_email(db, email=users_in.email)
+    if user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return crud_user.user.create_user(db=db, user=db_user)
+    return crud_user.user.create(db=db, obj_in=users_in)
 
 
 # works

@@ -26,4 +26,4 @@ class CRUDUnavailability(
         return db.query(self.model).offset(skip).limit(limit).all()
 
 
-unavailability = CRUDUnavailability(Unavailabilities)
+unavailabilities = CRUDUnavailability(Unavailabilities)

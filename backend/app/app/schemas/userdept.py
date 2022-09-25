@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class UserDepartmentBase(BaseModel):
-    deptname: str
+    userdept_id: int
 
 
 class UserDepartmentCreate(UserDepartmentBase):

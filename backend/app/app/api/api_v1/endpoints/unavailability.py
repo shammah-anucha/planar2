@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from ....crud.unavailability import unavailability
+from ....crud.unavailability import unavailabilities
 from ....crud.emails import crud_email
 from .....app.api import deps
 from sqlalchemy.orm import Session
@@ -16,7 +16,7 @@ router = APIRouter(
 def get_unavailabilities(
     skip: int = 0, limit: int = 100, db: Session = Depends(deps.get_db)
 ):
-    return unavailability.get_user_unavailable(db, skip=skip, limit=limit)
+    return unavailabilities.get_user_unavailable(db, skip=skip, limit=limit)
 
 
 @router.get("/emails")
