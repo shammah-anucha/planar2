@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 
-from ...app.db.base_class import Base
+from app.db.base_class import Base
 
 
 class Departments(Base):

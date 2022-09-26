@@ -3,8 +3,8 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Boolean, Column, Integer, String, Date
 from sqlalchemy.orm import relationship
 
-from ...app.db.base_class import Base
-from ...app.models.roster import Roster
+from app.db.base_class import Base
+from app.models.roster import Roster
 
 # from ...app.models.unavailability import Unavailabilities
 from sqlalchemy import Column, Integer, Date, ForeignKey
