@@ -4,12 +4,12 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
-from ...app.models.users import Unavailabilities
+from ...app.models import models
 from ...app.schemas.unavailability import UnavailabilityCreate, UnavailabilityUpdate
 
 
 class CRUDUnavailability(
-    CRUDBase[Unavailabilities, UnavailabilityCreate, UnavailabilityUpdate]
+    CRUDBase[models.Unavailabilities, UnavailabilityCreate, UnavailabilityUpdate]
 ):
     def set_user_unavailable(
         self, db: Session, *, days: UnavailabilityCreate, user_id: int
@@ -25,8 +25,8 @@ class CRUDUnavailability(
     # TODO remove unavailable emails that have passed the time frame
     def get_user_unavailable(
         self, db: Session, skip: int = 0, limit: int = 100
-    ) -> List[Unavailabilities]:
+    ) -> List[models.Unavailabilities]:
         return db.query(self.model).offset(skip).limit(limit).all()
 
 
-unavailabilities = CRUDUnavailability(Unavailabilities)
+unavailabilities = CRUDUnavailability(models.Unavailabilities)

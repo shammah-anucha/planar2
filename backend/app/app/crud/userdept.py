@@ -1,17 +1,15 @@
 from typing import Any, List
 from pydantic import EmailStr
 
-from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from ...app.crud.base import CRUDBase
-from ...app.models.userdept import UserDepartment
-from ...app.models.users import Users
+from ...app.models import models
 from ...app.schemas.userdept import UserDepartmentCreate, UserDepartmentUpdate
 
 
 class CRUDUserDepartment(
-    CRUDBase[UserDepartment, UserDepartmentCreate, UserDepartmentUpdate]
+    CRUDBase[models.UserDepartment, UserDepartmentCreate, UserDepartmentUpdate]
 ):
     def assign_department(
         self,
@@ -19,7 +17,7 @@ class CRUDUserDepartment(
         *,
         dept_id: UserDepartmentCreate,
         user_id: UserDepartmentCreate
-    ) -> UserDepartment:
+    ) -> models.UserDepartment:
         db_obj = self.model(user_id=user_id, dept_id=dept_id)
         db.add(db_obj)
         db.commit()
@@ -28,15 +26,15 @@ class CRUDUserDepartment(
 
     def get_user_department(
         self, db: Session, skip: int = 0, limit: int = 100
-    ) -> List[UserDepartment]:
+    ) -> List[models.UserDepartment]:
         return db.query(self.model).offset(skip).limit(limit).all()
 
     def get_email_in_department(self, dept_id: int, db: Session) -> List[EmailStr]:
         emails = []
         for email, dept_id in (
-            db.query(Users.email, UserDepartment.dept_id)
-            .filter(Users.user_id == UserDepartment.user_id)
-            .filter(UserDepartment.dept_id == dept_id)
+            db.query(models.Users.email, models.UserDepartment.dept_id)
+            .filter(models.Users.user_id == models.UserDepartment.user_id)
+            .filter(models.UserDepartment.dept_id == dept_id)
             .all()
         ):
             email = "".join(list(email))
@@ -44,4 +42,4 @@ class CRUDUserDepartment(
         return emails
 
 
-userdept = CRUDUserDepartment(UserDepartment)
+userdept = CRUDUserDepartment(models.UserDepartment)

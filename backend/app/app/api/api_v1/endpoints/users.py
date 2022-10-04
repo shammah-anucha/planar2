@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import Any, List
 from sqlalchemy.orm import Session
 from .....app.schemas.users import User, UserCreate
-from .....app.models.users import Users
+from .....app.models import models
 from .....app.api import deps
 from ....crud import crud_user
 
@@ -37,6 +37,6 @@ def read_user(user_id: int, db: Session = Depends(deps.get_db)):
 
 @router.delete("/users/{user_id}", tags=["users"])
 def delete_user(user_id: int, db: Session = Depends(deps.get_db)):
-    db.query(Users).filter(Users.user_id == user_id).delete()
+    db.query(models.Users).filter(models.Users.user_id == user_id).delete()
     db.commit()
     return "Delete Successful"
