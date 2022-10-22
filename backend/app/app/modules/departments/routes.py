@@ -9,22 +9,24 @@ from ....app.modules.departments.crud import department
 from ....app.modules.users.crud import user
 
 department_router = APIRouter(
-    prefix="/departments", tags=["departments"], dependencies=[Depends(get_db)]
+    prefix="/users", tags=["departments"], dependencies=[Depends(get_db)]
 )
 
 # departments
-@department_router.post("/", response_model=Department)
+@department_router.post("/{user_id}/departments", response_model=Department)
 def create_department(departments: DepartmentCreate, db: Session = Depends(get_db)):
     return department.create_department(db=db, obj_in=departments)
 
 
-@department_router.get("/user/", response_model=List[Department])
+@department_router.get("/{user_id}/departments", response_model=List[Department])
 def get_departments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return department.get_multi_department(db, skip=skip, limit=limit)
 
 
 # is it neccessary to create a schema for user_department
-@department_router.post("/{user_id}/{dept_id}", response_model=UserDepartment)
+@department_router.post(
+    "/{user_id}/departments/{dept_id}", response_model=UserDepartment
+)
 def assign_department(user_id: int, dept_id: int, db: Session = Depends(get_db)):
     db_user = user.get_user_id(db, id=user_id)
     db_dept = department.get_dept_id(db, id=dept_id)
@@ -36,7 +38,7 @@ def assign_department(user_id: int, dept_id: int, db: Session = Depends(get_db))
     # TODO avoid repeating the same entry
 
 
-@department_router.get("/")
+@department_router.get("/{user_id}/departments/{dept_id}")
 def get_user_departments(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):

@@ -9,25 +9,25 @@ from sqlalchemy.orm import Session
 
 
 email_router = APIRouter(
-    prefix="/send_email", tags=["send_email"], dependencies=[Depends(get_db)]
+    prefix="/users", tags=["send_email"], dependencies=[Depends(get_db)]
 )
 
 
-@email_router.get("/asynchronous")
-async def send_email_asynchronous():
-    await utils.send_email_async("Hello World", "tracy2anucha@gmail.com", "Hello World")
-    return "Success"
+# @email_router.get("/asynchronous")
+# async def send_email_asynchronous():
+#     await utils.send_email_async("Hello World", "tracy2anucha@gmail.com", "Hello World")
+#     return "Success"
 
 
-@email_router.get("/backgroundtasks")
-def send_email_backgroundtasks(background_tasks: utils.BackgroundTasks):
-    utils.send_email_background(
-        background_tasks, "Hello World", "tracy2anucha@gmail.com", "Hello World"
-    )
-    return "Success"
+# @email_router.get("/backgroundtasks")
+# def send_email_backgroundtasks(background_tasks: utils.BackgroundTasks):
+#     utils.send_email_background(
+#         background_tasks, "Hello World", "tracy2anucha@gmail.com", "Hello World"
+#     )
+#     return "Success"
 
 
-@email_router.get("/departments/{dept_id}")
+@email_router.get("/{user_id}/departments/{dept_id}/email")
 def send_emails_by_dept(
     background_tasks: utils.BackgroundTasks,
     dept_id: int,
