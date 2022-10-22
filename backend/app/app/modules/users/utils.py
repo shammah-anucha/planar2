@@ -6,8 +6,7 @@ from xml.dom import ValidationErr
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
-import crud
-import model
+from . import crud, model
 from ....app.modules.common.utils.token import TokenPayload
 from ....app.modules.common.utils.core import security
 from ....app.modules.common.utils.core.config import settings

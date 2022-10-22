@@ -2,9 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import Any, List
 from sqlalchemy.orm import Session
 from .schema import User, UserCreate
-import model
-import utils
-import crud
+from . import model, utils, crud
 
 
 user_router = APIRouter()
