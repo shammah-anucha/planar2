@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from ..app.api.api_v1.api import api_router
-from ..app.core.config import settings
-from ..app.db.session import engine
-from ..app.db.base_class import Base
+from ..app.modules.common.api import api_router
+from ..app.modules.common.utils.core.config import settings
+from ..app.modules.common.db.session import engine
+from ..app.modules.common.db.base_class import Base
 
 
 # Base.metadata.create_all(bind=engine)
