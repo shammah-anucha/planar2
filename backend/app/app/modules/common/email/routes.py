@@ -1,25 +1,25 @@
 from fastapi import APIRouter, Depends, HTTPException
 from .....app import utils
-from .....app.api import deps
-from ....crud.departments import department
-from ....crud.emails import crud_email
-from ....crud.userdept import userdept
+from .....app.modules.common.db.session import get_db
+from .....app.modules.departments.crud import department
+from .....app.modules.common.email.crud import crud_email
+from .....app.modules.userdepartment.crud import userdept
 from typing import List
 from sqlalchemy.orm import Session
 
 
-router = APIRouter(
-    prefix="/send_email", tags=["send_email"], dependencies=[Depends(deps.get_db)]
+email_router = APIRouter(
+    prefix="/send_email", tags=["send_email"], dependencies=[Depends(get_db)]
 )
 
 
-@router.get("/asynchronous")
+@email_router.get("/asynchronous")
 async def send_email_asynchronous():
     await utils.send_email_async("Hello World", "tracy2anucha@gmail.com", "Hello World")
     return "Success"
 
 
-@router.get("/backgroundtasks")
+@email_router.get("/backgroundtasks")
 def send_email_backgroundtasks(background_tasks: utils.BackgroundTasks):
     utils.send_email_background(
         background_tasks, "Hello World", "tracy2anucha@gmail.com", "Hello World"
@@ -27,11 +27,11 @@ def send_email_backgroundtasks(background_tasks: utils.BackgroundTasks):
     return "Success"
 
 
-@router.get("/departments/{dept_id}")
+@email_router.get("/departments/{dept_id}")
 def send_emails_by_dept(
     background_tasks: utils.BackgroundTasks,
     dept_id: int,
-    db: Session = Depends(deps.get_db),
+    db: Session = Depends(get_db),
 ):
     email_dept_available = []
     db_dept = department.get_dept_id(db, id=dept_id)
