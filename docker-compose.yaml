@@ -1,0 +1,15 @@
+# this is the list of all the available containers
+version: '3'
+services:
+  libpostal-rest:
+    image: clicksend/libpostal-rest
+    ports:
+      - "7777:8080"
+
+
+  planar-postgres:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: not-happening-again
