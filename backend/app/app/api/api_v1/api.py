@@ -6,7 +6,7 @@ from ....app.schemas.unavailability import Unavailability, UnavailabilityCreate
 from ....app.crud.unavailability import unavailabilities
 from ....app.crud.notification import send_notification
 from ....app.schemas.notification import NotificationCreate
-from ....app.models.events import Event
+from ....app.models.models import Event
 from ....app.api import deps
 from ....app.api.api_v1.endpoints import (
     events,
