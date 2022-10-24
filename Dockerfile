@@ -25,11 +25,13 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     curl \
     build-essential \
-    libpq-dev 
+    libpq-dev \
+    libaio1 \
+    libaio-dev \
+    python3-dev
 
 # install poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
-# RUN pip install poetry
 
 WORKDIR $PYSETUP_PATH
 
@@ -37,17 +39,14 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry install
 
-# RUN poetry shell
-
 # Production Image
 FROM python-base as production
 
+COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 
-COPY ./backend /backend/
+COPY ./backend /backend
 
 ENV POSTGRES_PASSWORD=not-happening-again
 
-# CMD ["poetry", "./planar/backend/app/app/main.py"]
-
-CMD ["uvicorn", "backend.app.app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "backend.app.app.main:app"]
