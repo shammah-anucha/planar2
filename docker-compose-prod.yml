@@ -1,0 +1,18 @@
+# this is the list of all the available containers
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+    env_file:
+      - backend/.env
+      
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    env_file:
+      - postgres.env

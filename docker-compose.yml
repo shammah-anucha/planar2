@@ -1,24 +1,9 @@
 # this is the list of all the available containers
 version: '3'
 services:
-  # libpostal-rest:
-  #   image: clicksend/libpostal-rest
-  #   ports:
-  #     - "7777:8080"
-
-  # api:
-  #   build: ./app
-  #   command: uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 80
-  #   volumes:
-  #     - ./app/:/usr/src/app/
-  #   ports:
-  #     - 80:80
-  #   depends_on:
-  #     - postgres
-
   planar-postgres:
     image: postgres:alpine
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: not-happening-again

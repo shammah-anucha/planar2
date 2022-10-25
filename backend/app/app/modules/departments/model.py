@@ -1,15 +1,6 @@
-from typing import TYPE_CHECKING
-
-from sqlalchemy import Boolean, Column, Integer, String, Date
-from sqlalchemy.orm import relationship
-
+from sqlalchemy import Column, Integer, String
 from ....app.modules.common.db.base_class import Base
-
-# from ...app.models.unavailability import Unavailabilities
-from sqlalchemy import Column, Integer, Date, ForeignKey, Time
-
-# if TYPE_CHECKING:
-#     from ...app.models.unavailability import Unavailabilities
+from sqlalchemy import Column, Integer
 
 
 class Departments(Base):

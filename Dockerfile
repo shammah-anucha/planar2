@@ -26,7 +26,6 @@ RUN apt-get update \
     curl \
     build-essential \
     libpq-dev \
-    libaio1 \
     libaio-dev \
     python3-dev
 
@@ -45,8 +44,6 @@ FROM python-base as production
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 
-COPY ./backend /backend
+COPY ./backend /backend/
 
-ENV POSTGRES_PASSWORD=not-happening-again
-
-CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "backend.app.app.main:app"]
+CMD ["uvicorn", "--host=0.0.0.0", "--port=8000", "backend.app.app.main:app"]

@@ -4,12 +4,12 @@ from sqlalchemy import Boolean, Column, Integer, String, Date
 from sqlalchemy.orm import relationship
 
 from ....app.modules.common.db.base_class import Base
+from ....app.modules.roster.model import Roster
 
-# from ...app.models.unavailability import Unavailabilities
 from sqlalchemy import Column, Integer, Date, ForeignKey, Time
 
-# if TYPE_CHECKING:
-#     from ...app.models.unavailability import Unavailabilities
+if TYPE_CHECKING:
+    from ....app.modules.unavailability.model import Unavailabilities
 
 
 class Users(Base):
