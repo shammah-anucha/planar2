@@ -4,6 +4,8 @@ from ....app.modules.common.db.session import get_db
 from typing import List
 from sqlalchemy.orm import Session
 from ....app.modules.events.model import Event
+from ...modules.roster.schema import Roster, RosterCreate
+from ...modules.roster.crud import roster
 from datetime import date
 
 
@@ -21,6 +23,19 @@ def create_event(event: schema.EventCreate, db: Session = Depends(get_db)):
 @event_router.get("/", response_model=List[schema.Event])
 def read_events(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.event.get_multi_events(db, skip=skip, limit=limit)
+
+
+@event_router.post("/{event_id}/users/{user_id}", response_model=Roster)
+def assign_event(
+    userid: int,
+    eventid: int,
+    db: Session = Depends(get_db),
+):
+    return roster.assign_event(
+        db=db,
+        event_id=eventid,
+        user_id=userid,
+    )
 
 
 # works

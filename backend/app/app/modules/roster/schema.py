@@ -4,7 +4,9 @@ from pydantic import BaseModel
 
 
 class RosterBase(BaseModel):
-    pass
+    roster_id: int
+    Firstname: Optional[str]
+    Lastname: Optional[str]
 
 
 class RosterCreate(RosterBase):
@@ -16,11 +18,8 @@ class RosterUpdate(RosterBase):
 
 
 class Roster(RosterBase):
-    roster_id: int
-    event_id: int
     user_id: int
-    Firstname: Optional[str]
-    Lastname: Optional[str]
+    event_id: int
 
     class Config:
         orm_mode = True

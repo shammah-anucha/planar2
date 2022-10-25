@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: 57245d8ff02c
+Revision ID: 909ee96def4d
 Revises: 
-Create Date: 2022-10-25 19:07:27.655951
+Create Date: 2022-10-25 23:37:36.404734
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '57245d8ff02c'
+revision = '909ee96def4d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,23 +25,6 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_departments_dept_id'), 'departments', ['dept_id'], unique=False)
     op.create_index(op.f('ix_departments_deptname'), 'departments', ['deptname'], unique=False)
-    op.create_table('events',
-    sa.Column('event_id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=True),
-    sa.Column('time', sa.Time(), nullable=True),
-    sa.Column('location', sa.String(), nullable=True),
-    sa.Column('description', sa.String(), nullable=True),
-    sa.Column('date', sa.Date(), nullable=True),
-    sa.Column('host', sa.String(), nullable=True),
-    sa.PrimaryKeyConstraint('event_id')
-    )
-    op.create_index(op.f('ix_events_date'), 'events', ['date'], unique=False)
-    op.create_index(op.f('ix_events_description'), 'events', ['description'], unique=False)
-    op.create_index(op.f('ix_events_event_id'), 'events', ['event_id'], unique=False)
-    op.create_index(op.f('ix_events_host'), 'events', ['host'], unique=False)
-    op.create_index(op.f('ix_events_location'), 'events', ['location'], unique=False)
-    op.create_index(op.f('ix_events_name'), 'events', ['name'], unique=False)
-    op.create_index(op.f('ix_events_time'), 'events', ['time'], unique=False)
     op.create_table('users',
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('email', sa.String(), nullable=True),
@@ -64,6 +47,25 @@ def upgrade() -> None:
     op.create_index(op.f('ix_users_phone'), 'users', ['phone'], unique=False)
     op.create_index(op.f('ix_users_user_id'), 'users', ['user_id'], unique=False)
     op.create_index(op.f('ix_users_username'), 'users', ['username'], unique=False)
+    op.create_table('events',
+    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('time', sa.Time(), nullable=True),
+    sa.Column('location', sa.String(), nullable=True),
+    sa.Column('description', sa.String(), nullable=True),
+    sa.Column('date', sa.Date(), nullable=True),
+    sa.Column('host', sa.String(), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], ),
+    sa.PrimaryKeyConstraint('event_id')
+    )
+    op.create_index(op.f('ix_events_date'), 'events', ['date'], unique=False)
+    op.create_index(op.f('ix_events_description'), 'events', ['description'], unique=False)
+    op.create_index(op.f('ix_events_event_id'), 'events', ['event_id'], unique=False)
+    op.create_index(op.f('ix_events_host'), 'events', ['host'], unique=False)
+    op.create_index(op.f('ix_events_location'), 'events', ['location'], unique=False)
+    op.create_index(op.f('ix_events_name'), 'events', ['name'], unique=False)
+    op.create_index(op.f('ix_events_time'), 'events', ['time'], unique=False)
     op.create_table('messages',
     sa.Column('msg_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
@@ -81,17 +83,6 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('notification_id')
     )
     op.create_index(op.f('ix_notification_notification_id'), 'notification', ['notification_id'], unique=False)
-    op.create_table('rosters',
-    sa.Column('roster_id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('event_id', sa.Integer(), nullable=True),
-    sa.Column('Firstname', sa.String(), nullable=True),
-    sa.Column('Lastname', sa.String(), nullable=True),
-    sa.ForeignKeyConstraint(['event_id'], ['events.event_id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], ),
-    sa.PrimaryKeyConstraint('roster_id')
-    )
-    op.create_index(op.f('ix_rosters_roster_id'), 'rosters', ['roster_id'], unique=False)
     op.create_table('unavailabilities',
     sa.Column('aval_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
@@ -112,23 +103,42 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('userdept_id')
     )
     op.create_index(op.f('ix_userdepartment_userdept_id'), 'userdepartment', ['userdept_id'], unique=False)
+    op.create_table('rosters',
+    sa.Column('roster_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('event_id', sa.Integer(), nullable=True),
+    sa.Column('Firstname', sa.String(), nullable=True),
+    sa.Column('Lastname', sa.String(), nullable=True),
+    sa.ForeignKeyConstraint(['event_id'], ['events.event_id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], ),
+    sa.PrimaryKeyConstraint('roster_id')
+    )
+    op.create_index(op.f('ix_rosters_roster_id'), 'rosters', ['roster_id'], unique=False)
     # ### end Alembic commands ###
 
 
 def downgrade() -> None:
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_index(op.f('ix_rosters_roster_id'), table_name='rosters')
+    op.drop_table('rosters')
     op.drop_index(op.f('ix_userdepartment_userdept_id'), table_name='userdepartment')
     op.drop_table('userdepartment')
     op.drop_index(op.f('ix_unavailabilities_start_date'), table_name='unavailabilities')
     op.drop_index(op.f('ix_unavailabilities_end_date'), table_name='unavailabilities')
     op.drop_index(op.f('ix_unavailabilities_aval_id'), table_name='unavailabilities')
     op.drop_table('unavailabilities')
-    op.drop_index(op.f('ix_rosters_roster_id'), table_name='rosters')
-    op.drop_table('rosters')
     op.drop_index(op.f('ix_notification_notification_id'), table_name='notification')
     op.drop_table('notification')
     op.drop_index(op.f('ix_messages_msg_id'), table_name='messages')
     op.drop_table('messages')
+    op.drop_index(op.f('ix_events_time'), table_name='events')
+    op.drop_index(op.f('ix_events_name'), table_name='events')
+    op.drop_index(op.f('ix_events_location'), table_name='events')
+    op.drop_index(op.f('ix_events_host'), table_name='events')
+    op.drop_index(op.f('ix_events_event_id'), table_name='events')
+    op.drop_index(op.f('ix_events_description'), table_name='events')
+    op.drop_index(op.f('ix_events_date'), table_name='events')
+    op.drop_table('events')
     op.drop_index(op.f('ix_users_username'), table_name='users')
     op.drop_index(op.f('ix_users_user_id'), table_name='users')
     op.drop_index(op.f('ix_users_phone'), table_name='users')
@@ -138,14 +148,6 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_users_Firstname'), table_name='users')
     op.drop_index(op.f('ix_users_D_O_B'), table_name='users')
     op.drop_table('users')
-    op.drop_index(op.f('ix_events_time'), table_name='events')
-    op.drop_index(op.f('ix_events_name'), table_name='events')
-    op.drop_index(op.f('ix_events_location'), table_name='events')
-    op.drop_index(op.f('ix_events_host'), table_name='events')
-    op.drop_index(op.f('ix_events_event_id'), table_name='events')
-    op.drop_index(op.f('ix_events_description'), table_name='events')
-    op.drop_index(op.f('ix_events_date'), table_name='events')
-    op.drop_table('events')
     op.drop_index(op.f('ix_departments_deptname'), table_name='departments')
     op.drop_index(op.f('ix_departments_dept_id'), table_name='departments')
     op.drop_table('departments')

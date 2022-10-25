@@ -42,7 +42,7 @@ def delete_user(user_id: int, db: Session = Depends(utils.get_db)):
     return "Delete Successful"
 
 
-@user_router.get("/users/{user_id}/notification/{from_user}/{to_user}")
+@user_router.get("/users/{user_id}/notification/{from_user}/{to_user}", tags=["users"])
 def notification(
     from_user: int,
     to_user: int,
