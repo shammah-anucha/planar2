@@ -1,0 +1,5 @@
+Generic single-database configuration.
+
+poetry run alembic revision --autogenerate -m "initial"
+
+poetry run alembic upgrade head
