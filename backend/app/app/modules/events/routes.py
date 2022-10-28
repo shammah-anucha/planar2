@@ -25,19 +25,6 @@ def read_events(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.event.get_multi_events(db, skip=skip, limit=limit)
 
 
-@event_router.post("/{event_id}/users/{user_id}", response_model=Roster)
-def assign_event(
-    userid: int,
-    eventid: int,
-    db: Session = Depends(get_db),
-):
-    return roster.assign_event(
-        db=db,
-        event_id=eventid,
-        user_id=userid,
-    )
-
-
 # works
 @event_router.get("/upcoming_events")
 def read_upcoming_events(db: Session = Depends(get_db)):
