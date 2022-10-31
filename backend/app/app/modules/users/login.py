@@ -13,7 +13,7 @@ login_router = APIRouter(
 )
 
 # works
-@login_router.post("/access-token", response_model=Token)
+@login_router.post("/", response_model=Token)
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(utils.get_db),

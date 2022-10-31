@@ -7,9 +7,11 @@ from ....app.modules.users.routes import user_router
 from ....app.modules.events.routes import event_router
 from ....app.modules.departments.routes import department_router
 from ....app.modules.users.login import login_router
+
 from ....app.modules.roster.routes import roster_router
 from ....app.modules.common.email.routes import email_router
 
+# from ....app.modules.association.routes import volunteer_router
 
 api_router = APIRouter(dependencies=[Depends(get_db)])
 

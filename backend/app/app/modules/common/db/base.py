@@ -9,3 +9,6 @@ from .....app.modules.roster import model
 from .....app.modules.unavailability import model
 from .....app.modules.userdepartment import model
 from .....app.modules.users import model
+
+
+# from .....app.modules.events.associationtable import model

@@ -1,10 +1,11 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Column, Integer, String, Date
+from sqlalchemy import Boolean, Column, Integer, String, Date, Table
 from sqlalchemy.orm import relationship
 
 from ....app.modules.common.db.base_class import Base
-from ....app.modules.roster.model import Roster
+
+# from ....app.modules.events.model import event_volunteers
 
 from sqlalchemy import Column, Integer, Date, ForeignKey, Time
 
@@ -27,5 +28,13 @@ class Users(Base):
     phone = Column(String, index=True)
     disabled = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
-    events = relationship("Roster")
+    # assigned_events = relationship("Event", back_populates="volunteers")
     unavailabilities = relationship("Unavailabilities", back_populates="user")
+
+
+class UserRoles(Base):
+
+    __tablename__ = "userroles"
+
+    userrole_id = Column(Integer, primary_key=True, index=True)
+    role = Column(String, unique=True, index=True)

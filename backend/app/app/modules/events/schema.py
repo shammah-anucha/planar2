@@ -22,9 +22,15 @@ class EventUpdate(EventBase):
     pass
 
 
+class Volunteer(BaseModel):
+    event_id: int
+    user_id: int
+
+
 class EventInDBBase(EventBase):
     event_id: int
     # user_id: int
+    # volunteer: int
 
     class Config:
         orm_mode = True

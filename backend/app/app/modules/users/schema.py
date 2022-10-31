@@ -31,7 +31,7 @@ class UserUpdate(UserBase):
 class UserInDBBase(UserBase):
     user_id: int
     disabled: bool
-    event: List[Event] = []
+    # assigned_events: int
     unavailabilities: List[Unavailability] = []
 
     class Config:
