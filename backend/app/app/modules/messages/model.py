@@ -13,4 +13,4 @@ class Messages(Base):
 
     msg_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.user_id"))
-    message = Column(String)
+    message = Column(String, nullable=True)

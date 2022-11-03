@@ -5,6 +5,11 @@ from urllib import response
 from pydantic import BaseModel
 
 
+class Response(BaseModel):
+    Accept: str = "Accept"
+    Decline: str = "Decline"
+
+
 class RosterBase(BaseModel):
     pass
 

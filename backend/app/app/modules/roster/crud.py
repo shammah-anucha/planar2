@@ -1,13 +1,18 @@
 import re
-from datetime import date, datetime
-from typing import List, Optional, Union, Dict, Any
+from datetime import datetime
+from typing import List, Optional
 from fastapi import Depends, HTTPException, status
+
+
+from backend.app.app.modules.messages.crud import assign_message
+
 from ....app.modules.common.db.session import get_db
 
 from sqlalchemy.orm import Session
 
 from ...modules.common.utils.base import CRUDBase
 from ...modules.users.model import Users
+from ...modules.users.crud import user
 from ...modules.roster.model import Roster
 
 from . import schema
@@ -15,9 +20,37 @@ from ....app.modules.users.crud import user
 
 
 class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
+    def get_volunteer(
+        self, db: Session, user_id: int, event_id: int
+    ) -> Optional[Roster]:
+        return (
+            db.query(Roster)
+            .filter(Roster.user_id == user_id)
+            .filter(Roster.event_id == event_id)
+            .first()
+        )
+
+    def get_volunteer_response(
+        self, db: Session, roster_id: int, response: str
+    ) -> Optional[Roster]:
+        return (
+            db.query(Roster)
+            .filter(Roster.roster_id == roster_id)
+            .filter(Roster.response == response)
+            .first()
+        )
+
     def create_roster(
         self, db: Session, *, sender_id: int, user_id: int, event_id: int
     ) -> Roster:
+        volunteer = roster.get_volunteer(db=db, user_id=user_id, event_id=event_id)
+        admin = (
+            db.query(Users.is_admin)
+            .filter(Users.user_id == sender_id)
+            .filter(Users.is_admin == "true")
+            .first()
+        )
+
         Firstname = str(
             db.query(Users.Firstname).filter(Users.user_id == user_id).all()
         )
@@ -34,9 +67,20 @@ class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
             Lastname=Lastname,
             created_at=datetime.utcnow(),
         )
+
+        if not admin:
+            raise HTTPException(
+                status_code=404,
+                detail="User does not have enough privileges",
+            )
+        if volunteer:
+            raise HTTPException(
+                status_code=400, detail="Volunteer Already Assigned to Event"
+            )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
+        assign_message(user_id=user_id, db=db)
         return db_obj
 
     def read_roster(
@@ -57,7 +101,7 @@ class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
         if not db_roster:
             raise HTTPException(
                 status_code=status.HTTP_200_OK,
-                detail=f"No post with this id: {roster_id} found",
+                detail=f"No roster with this id: {roster_id} found",
             )
 
         volunteer = user.get_user_id(db, id=user_id)
@@ -65,6 +109,12 @@ class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
             raise HTTPException(
                 status_code=404,
                 detail="The user with this username does not exist in the system",
+            )
+        # just for testing purposes, in the real sense it's supposed to only show two options, Accept or Decline and accessed by clicking
+        if response != "Accept" or response != "Decline":
+            raise HTTPException(
+                status_code=502,
+                detail="Invalid Response",
             )
         response.response_date = datetime.utcnow()
         roster_query.update(response.dict(exclude_none=True), synchronize_session=False)

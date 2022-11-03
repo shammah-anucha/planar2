@@ -69,5 +69,18 @@ class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
     def is_admin(self, user: Users) -> bool:
         return user.is_admin
 
+    # def is_admin(self, sender_id: int, db: Session) -> bool:
+
+    #     admin = (
+    #         db.query(Users.is_admin)
+    #         .filter(Users.user_id == sender_id)
+    #         .filter(Users.is_admin == "true")
+    #         .first()
+    #     )
+    #     if admin:
+    #         return Users.is_admin
+    #     else:
+    #         return "User does not have enough privileges"
+
 
 user = CRUDUser(Users)

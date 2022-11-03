@@ -15,3 +15,7 @@ def assign_message(db: Session, user_id: int):
     db.commit()
     db.refresh(db_message)
     return db_message
+
+
+def check_inbox(db: Session, user_id: int):
+    return db.query(Messages).filter(Messages.user_id == user_id).first()
