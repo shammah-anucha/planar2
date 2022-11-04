@@ -34,7 +34,9 @@ async def get_current_user(
         )
     user = crud.user.get(db, id=token_data.sub)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
     return user
 
 
@@ -42,7 +44,9 @@ async def get_current_active_user(
     current_user: model.Users = Depends(get_current_user),
 ) -> model.Users:
     if crud.user.disabled(current_user):
-        raise HTTPException(status_code=400, detail="Inactive user")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user"
+        )
     return current_user
 
 
@@ -51,6 +55,21 @@ async def get_current_active_admin(
 ) -> model.Users:
     if not crud.user.is_admin(current_user):
         raise HTTPException(
-            status_code=400, detail="The user doesn't have enough privileges"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The user doesn't have enough privileges",
         )
     return current_user
+
+
+async def get_admin(user_id: int, db: Session):
+    admin = (
+        db.query(model.Users.is_admin)
+        .filter(model.Users.user_id == user_id)
+        .filter(model.Users.is_admin == "true")
+        .first()
+    )
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User does not have enough privileges",
+        )

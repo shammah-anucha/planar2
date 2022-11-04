@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List, Optional
 from fastapi import Depends, HTTPException, status
 
-
+from . import schema
 from backend.app.app.modules.messages.crud import assign_message
 
 from ....app.modules.common.db.session import get_db
@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from ...modules.common.utils.base import CRUDBase
 from ...modules.users.model import Users
 from ...modules.users.crud import user
+from ...modules.users.utils import get_admin
 from ...modules.roster.model import Roster
 
 from . import schema
@@ -73,6 +74,7 @@ class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
                 status_code=404,
                 detail="User does not have enough privileges",
             )
+
         if volunteer:
             raise HTTPException(
                 status_code=400, detail="Volunteer Already Assigned to Event"
@@ -111,11 +113,15 @@ class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
                 detail="The user with this username does not exist in the system",
             )
         # just for testing purposes, in the real sense it's supposed to only show two options, Accept or Decline and accessed by clicking
-        if response != "Accept" or response != "Decline":
+        if not (
+            str(response.response) == schema.Response.Accept.value
+            or str(response.response) == schema.Response.Decline.value
+        ):
             raise HTTPException(
                 status_code=502,
                 detail="Invalid Response",
             )
+
         response.response_date = datetime.utcnow()
         roster_query.update(response.dict(exclude_none=True), synchronize_session=False)
         db.commit()

@@ -1,11 +1,12 @@
 from datetime import datetime
 from typing import Optional
 from urllib import response
+from enum import Enum
 
 from pydantic import BaseModel
 
 
-class Response(BaseModel):
+class Response(Enum):
     Accept: str = "Accept"
     Decline: str = "Decline"
 

@@ -1,6 +1,7 @@
 from typing import Any, Dict, Optional, Union, List
 
 from sqlalchemy.orm import Session
+from fastapi import Depends, HTTPException, status
 
 from ....app.modules.common.utils.core.security import (
     get_password_hash,
@@ -9,6 +10,7 @@ from ....app.modules.common.utils.core.security import (
 from ...modules.common.utils.base import CRUDBase
 from ...modules.users.model import Users
 from ...modules.users.schema import UserCreate, UserUpdate
+from ...modules.common.utils.country_code import CountryCodes
 
 
 class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
@@ -16,17 +18,27 @@ class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
         return db.query(Users).filter(Users.email == email).first()
 
     def create(self, db: Session, *, obj_in: UserCreate) -> Users:
+        # Max phone digits: https://en.wikipedia.org/wiki/Telephone_numbering_plan#:~:text=It%20is%20an%20open%20numbering,number%20for%20international%20destination%20routing.
         db_user = Users(
             email=obj_in.email,
             username=obj_in.username,
             Firstname=obj_in.Firstname,
             Lastname=obj_in.Lastname,
             D_O_B=obj_in.D_O_B,
+            nationality=obj_in.nationality,
             country_of_residence=obj_in.country_of_residence,
             phone=obj_in.phone,
+            country_code=obj_in.country_code.value,
             is_admin=obj_in.is_admin,
             hashed_password=get_password_hash(obj_in.password),
         )
+        phone_length = len(str(db_user.phone))
+        if not (phone_length >= 7 and phone_length <= 11):
+            raise HTTPException(
+                status_code=502,
+                detail="Invalid Phone Number",
+            )
+        db_user.phone = str(db_user.country_code) + str(db_user.phone)
         db.add(db_user)
         db.commit()
         db.refresh(db_user)

@@ -24,11 +24,12 @@ class Users(Base):
     Firstname = Column(String, index=True)
     Lastname = Column(String, index=True)
     D_O_B = Column(Date, index=True)
+    nationality = Column(String, index=True)
     country_of_residence = Column(String, index=True)
     phone = Column(String, index=True)
+    country_code = Column(String, index=True)
     disabled = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
-    # assigned_events = relationship("Event", back_populates="volunteers")
     unavailabilities = relationship("Unavailabilities", back_populates="user")
 
 

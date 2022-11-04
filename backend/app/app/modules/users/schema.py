@@ -1,19 +1,22 @@
-from typing import Optional, List
+from typing import Optional, List, Union
 from datetime import date
 from ..events.schema import Event
 from ..unavailability.schema import Unavailability
 
 from pydantic import BaseModel, EmailStr
+from ...modules.common.utils.country_code import CountryCodes
 
 
 class UserBase(BaseModel):
     email: EmailStr
     username: Optional[str]
-    Firstname: Optional[str]
-    Lastname: Optional[str]
-    D_O_B: Optional[date]
+    Firstname: str
+    Lastname: str
+    D_O_B: date
     country_of_residence: Optional[str]
-    phone: Optional[str]
+    nationality: str
+    country_code: CountryCodes
+    phone: int
     is_admin: Optional[bool] = None
 
 
