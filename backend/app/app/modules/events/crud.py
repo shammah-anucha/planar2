@@ -23,15 +23,6 @@ class CRUDEvent(CRUDBase[Event, EventCreate, EventUpdate]):
     ) -> List[Event]:
         return db.query(self.model).offset(skip).limit(limit).all()
 
-    # def assign_event(
-    #     self, db: Session, *, db_obj: Event, obj_in: Union[EventUpdate, Dict[str, Any]]
-    # ) -> Event:
-    #     if isinstance(obj_in, dict):
-    #         update_data = obj_in
-    #     else:
-    #         update_data = obj_in.dict(exclude_unset=True)
-    #     return super().update(db, db_obj=db_obj, obj_in=update_data)
-
 
 event = CRUDEvent(Event)
 

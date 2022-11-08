@@ -11,7 +11,7 @@ from ....app.modules.common.db.session import get_db
 user_router = APIRouter()
 
 # works
-@user_router.post("/users/", response_model=User, tags=["users"])
+@user_router.post("/users/{user_id}", response_model=User, tags=["users"])
 def create_user(*, users_in: UserCreate, db: Session = Depends(utils.get_db)) -> Any:
     """Create new user."""
     user = crud.user.get_user_by_email(db, email=users_in.email)

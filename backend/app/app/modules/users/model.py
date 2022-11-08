@@ -31,11 +31,3 @@ class Users(Base):
     disabled = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
     unavailabilities = relationship("Unavailabilities", back_populates="user")
-
-
-class UserRoles(Base):
-
-    __tablename__ = "userroles"
-
-    userrole_id = Column(Integer, primary_key=True, index=True)
-    role = Column(String, unique=True, index=True)

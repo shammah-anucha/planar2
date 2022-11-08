@@ -14,4 +14,3 @@ class Event(Base):
     description = Column(String, index=True)
     date = Column(Date, index=True)
     host = Column(String, index=True)
-    # volunteers = relationship("Users", back_populates="assigned_events")

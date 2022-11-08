@@ -11,6 +11,8 @@ from ....app.modules.users.login import login_router
 from ....app.modules.roster.routes import roster_router
 from ....app.modules.common.email.routes import email_router
 from ....app.modules.messages.routes import notification_router
+from ....app.modules.userrole.routes import userrole_router
+from ....app.modules.userroleassigned.routes import userroleassigned_router
 
 
 # from ....app.modules.association.routes import volunteer_router
@@ -26,3 +28,5 @@ api_router.include_router(email_router)
 api_router.include_router(unavailability_router)
 api_router.include_router(roster_router)
 api_router.include_router(notification_router)
+api_router.include_router(userrole_router)
+api_router.include_router(userroleassigned_router)
