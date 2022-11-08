@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from xml.dom import ValidationErr
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from . import crud, model
 from ....app.modules.common.utils.token import TokenPayload
@@ -61,7 +62,7 @@ async def get_current_active_admin(
     return current_user
 
 
-async def get_admin(user_id: int, db: Session):
+async def get_admin(user_id: UUID, db: Session):
     admin = (
         db.query(model.Users.is_admin)
         .filter(model.Users.user_id == user_id)

@@ -2,6 +2,7 @@ from typing import Any, List
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from ...modules.common.utils.base import CRUDBase
 from ...modules.unavailability.model import Unavailabilities
@@ -12,7 +13,7 @@ class CRUDUnavailability(
     CRUDBase[Unavailabilities, UnavailabilityCreate, UnavailabilityUpdate]
 ):
     def set_user_unavailable(
-        self, db: Session, *, days: UnavailabilityCreate, user_id: int
+        self, db: Session, *, days: UnavailabilityCreate, user_id: UUID
     ):
         db_unavalable_days = self.model(
             start_date=days.start_date, end_date=days.end_date, user_id=user_id

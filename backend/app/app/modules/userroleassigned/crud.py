@@ -13,13 +13,14 @@ from ....app.modules.users.crud import user
 from ....app.modules.userrole.crud import userroles
 
 from ...modules.users.model import Users
+from uuid import UUID
 import re
 
 
 class CRUDUserRolesAssigned(
     CRUDBase[UserRolesAssigned, UserRoleAssignedCreate, UserRoleAssignedUpdate]
 ):
-    def assign_userrole(self, user_id: int, userrole_id: int, db: Session):
+    def assign_userrole(self, user_id: UUID, userrole_id: int, db: Session):
         db_user = user.get_user_id(db, id=user_id)
         db_role = userroles.get_userrole_id(db, id=userrole_id)
         if db_user is None:

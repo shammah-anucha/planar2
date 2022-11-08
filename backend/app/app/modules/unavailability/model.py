@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 from ....app.modules.common.db.base_class import Base
 from ....app.modules.users.model import Users
-
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Column, Integer, Date, ForeignKey, Time
 
 if TYPE_CHECKING:
@@ -16,7 +16,7 @@ class Unavailabilities(Base):
     __tablename__ = "unavailabilities"
 
     aval_id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    user_id = Column(UUID, ForeignKey("users.user_id"), nullable=False)
     start_date = Column(Date, index=True)
     end_date = Column(Date, index=True)
     user = relationship("Users", back_populates="unavailabilities")

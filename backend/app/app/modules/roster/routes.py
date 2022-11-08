@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from ...modules.roster.schema import Roster, RosterUpdate, RosterInDB
 
 from ...modules.roster.crud import roster
+from uuid import UUID
 
 
 roster_router = APIRouter(
@@ -17,7 +18,7 @@ roster_router = APIRouter(
 
 @roster_router.post("/", response_model=Roster)
 def create_roster(
-    userid: int,
+    userid: UUID,
     eventid: int,
     sender_id: int,
     db: Session = Depends(get_db),
@@ -32,7 +33,7 @@ def create_roster(
 def volunteer_response(
     response: RosterUpdate,
     roster_id: int,
-    user_id: int,
+    user_id: UUID,
     db: Session = Depends(get_db),
 ):
     return roster.volunteer_response(

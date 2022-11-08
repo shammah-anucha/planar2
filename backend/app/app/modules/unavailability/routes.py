@@ -3,6 +3,7 @@ from .crud import unavailabilities
 from ....app.modules.common.email.crud import crud_email
 from ....app.modules.common.db.session import get_db
 from sqlalchemy.orm import Session
+from uuid import UUID
 from ....app.modules.unavailability.schema import Unavailability, UnavailabilityCreate
 
 
@@ -28,7 +29,7 @@ def get_available_emails(db: Session = Depends(get_db)):
 # set available days in a week/month
 @unavailability_router.post("/{user_id}/unavailability", response_model=Unavailability)
 def set_unavailability(
-    user_id: int, days: UnavailabilityCreate, db: Session = Depends(get_db)
+    user_id: UUID, days: UnavailabilityCreate, db: Session = Depends(get_db)
 ):
     # if user_login:
     #     models.Unavailabilities.user_id = days.user_id

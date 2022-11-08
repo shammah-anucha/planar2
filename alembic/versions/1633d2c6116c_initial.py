@@ -1,16 +1,16 @@
 """initial
 
-Revision ID: 7a6ce795b28e
+Revision ID: 1633d2c6116c
 Revises: 
-Create Date: 2022-11-05 01:52:14.234715
+Create Date: 2022-11-08 20:34:32.086889
 
 """
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '7a6ce795b28e'
+revision = '1633d2c6116c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -50,34 +50,26 @@ def upgrade() -> None:
     op.create_index(op.f('ix_userroles_role'), 'userroles', ['role'], unique=True)
     op.create_index(op.f('ix_userroles_userrole_id'), 'userroles', ['userrole_id'], unique=False)
     op.create_table('users',
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', postgresql.UUID(as_uuid=True), nullable=False),
     sa.Column('email', sa.String(), nullable=True),
     sa.Column('hashed_password', sa.String(), nullable=True),
     sa.Column('username', sa.String(), nullable=True),
-    sa.Column('Firstname', sa.String(), nullable=True),
-    sa.Column('Lastname', sa.String(), nullable=True),
-    sa.Column('D_O_B', sa.Date(), nullable=True),
-    sa.Column('nationality', sa.String(), nullable=True),
-    sa.Column('country_of_residence', sa.String(), nullable=True),
-    sa.Column('phone', sa.String(), nullable=True),
-    sa.Column('country_code', sa.String(), nullable=True),
+    sa.Column('Firstname', sa.String(), nullable=False),
+    sa.Column('Lastname', sa.String(), nullable=False),
+    sa.Column('D_O_B', sa.Date(), nullable=False),
+    sa.Column('nationality', sa.String(), nullable=False),
+    sa.Column('country_of_residence', sa.String(), nullable=False),
+    sa.Column('phone', sa.String(), nullable=False),
+    sa.Column('country_code', sa.String(), nullable=False),
     sa.Column('disabled', sa.Boolean(), nullable=True),
     sa.Column('is_admin', sa.Boolean(), nullable=True),
-    sa.PrimaryKeyConstraint('user_id')
+    sa.PrimaryKeyConstraint('user_id'),
+    sa.UniqueConstraint('email')
     )
-    op.create_index(op.f('ix_users_D_O_B'), 'users', ['D_O_B'], unique=False)
-    op.create_index(op.f('ix_users_Firstname'), 'users', ['Firstname'], unique=False)
-    op.create_index(op.f('ix_users_Lastname'), 'users', ['Lastname'], unique=False)
-    op.create_index(op.f('ix_users_country_code'), 'users', ['country_code'], unique=False)
-    op.create_index(op.f('ix_users_country_of_residence'), 'users', ['country_of_residence'], unique=False)
-    op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
-    op.create_index(op.f('ix_users_nationality'), 'users', ['nationality'], unique=False)
-    op.create_index(op.f('ix_users_phone'), 'users', ['phone'], unique=False)
     op.create_index(op.f('ix_users_user_id'), 'users', ['user_id'], unique=False)
-    op.create_index(op.f('ix_users_username'), 'users', ['username'], unique=False)
     op.create_table('messages',
     sa.Column('msg_id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', postgresql.UUID(), nullable=False),
     sa.Column('message', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], ),
     sa.PrimaryKeyConstraint('msg_id')
@@ -85,8 +77,8 @@ def upgrade() -> None:
     op.create_index(op.f('ix_messages_msg_id'), 'messages', ['msg_id'], unique=False)
     op.create_table('notification',
     sa.Column('notification_id', sa.Integer(), nullable=False),
-    sa.Column('to_user', sa.Integer(), nullable=True),
-    sa.Column('from_user', sa.Integer(), nullable=True),
+    sa.Column('to_user', postgresql.UUID(), nullable=False),
+    sa.Column('from_user', postgresql.UUID(), nullable=False),
     sa.ForeignKeyConstraint(['from_user'], ['users.user_id'], ),
     sa.ForeignKeyConstraint(['to_user'], ['users.user_id'], ),
     sa.PrimaryKeyConstraint('notification_id')
@@ -94,9 +86,9 @@ def upgrade() -> None:
     op.create_index(op.f('ix_notification_notification_id'), 'notification', ['notification_id'], unique=False)
     op.create_table('rosters',
     sa.Column('roster_id', sa.Integer(), nullable=False),
-    sa.Column('sender_id', sa.Integer(), nullable=True),
+    sa.Column('sender_id', postgresql.UUID(as_uuid=True), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', postgresql.UUID(), nullable=False),
     sa.Column('event_id', sa.Integer(), nullable=False),
     sa.Column('Firstname', sa.String(), nullable=False),
     sa.Column('Lastname', sa.String(), nullable=False),
@@ -110,7 +102,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_rosters_roster_id'), 'rosters', ['roster_id'], unique=False)
     op.create_table('unavailabilities',
     sa.Column('aval_id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', postgresql.UUID(), nullable=False),
     sa.Column('start_date', sa.Date(), nullable=True),
     sa.Column('end_date', sa.Date(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], ),
@@ -121,7 +113,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_unavailabilities_start_date'), 'unavailabilities', ['start_date'], unique=False)
     op.create_table('userdepartment',
     sa.Column('userdept_id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', postgresql.UUID(), nullable=False),
     sa.Column('dept_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['dept_id'], ['departments.dept_id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], ),
@@ -131,7 +123,7 @@ def upgrade() -> None:
     op.create_table('userrolesassigned',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('userrole_id', sa.String(), nullable=True),
-    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', postgresql.UUID(), nullable=False),
     sa.Column('Firstname', sa.String(), nullable=False),
     sa.Column('Lastname', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], ),
@@ -159,16 +151,7 @@ def downgrade() -> None:
     op.drop_table('notification')
     op.drop_index(op.f('ix_messages_msg_id'), table_name='messages')
     op.drop_table('messages')
-    op.drop_index(op.f('ix_users_username'), table_name='users')
     op.drop_index(op.f('ix_users_user_id'), table_name='users')
-    op.drop_index(op.f('ix_users_phone'), table_name='users')
-    op.drop_index(op.f('ix_users_nationality'), table_name='users')
-    op.drop_index(op.f('ix_users_email'), table_name='users')
-    op.drop_index(op.f('ix_users_country_of_residence'), table_name='users')
-    op.drop_index(op.f('ix_users_country_code'), table_name='users')
-    op.drop_index(op.f('ix_users_Lastname'), table_name='users')
-    op.drop_index(op.f('ix_users_Firstname'), table_name='users')
-    op.drop_index(op.f('ix_users_D_O_B'), table_name='users')
     op.drop_table('users')
     op.drop_index(op.f('ix_userroles_userrole_id'), table_name='userroles')
     op.drop_index(op.f('ix_userroles_role'), table_name='userroles')

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import date, datetime
+from uuid import UUID
 
 
 class NotificationBase(BaseModel):
@@ -19,8 +20,8 @@ class NotificationUpdate(NotificationBase):
 
 
 class Notification(NotificationBase):
-    to_user: int
-    from_user: int
+    to_user: UUID
+    from_user: UUID
 
     class Config:
         orm_mode = True

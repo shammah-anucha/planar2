@@ -7,6 +7,7 @@ from ....app.modules.userdepartment.schema import UserDepartment
 from ....app.modules.userdepartment.crud import userdept
 from ....app.modules.departments.crud import department
 from ....app.modules.users.crud import user
+from uuid import UUID
 
 department_router = APIRouter(
     prefix="/departments", tags=["departments"], dependencies=[Depends(get_db)]
@@ -25,7 +26,7 @@ def get_departments(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 
 # is it neccessary to create a schema for user_department
 @department_router.post("/{dept_id}", response_model=UserDepartment)
-def assign_department(user_id: int, dept_id: int, db: Session = Depends(get_db)):
+def assign_department(user_id: UUID, dept_id: int, db: Session = Depends(get_db)):
     db_user = user.get_user_id(db, id=user_id)
     db_dept = department.get_dept_id(db, id=dept_id)
     if db_user is None:

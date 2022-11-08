@@ -1,4 +1,5 @@
 from typing import Optional, List, Union
+from uuid import UUID
 from datetime import date
 from ..events.schema import Event
 from ..unavailability.schema import Unavailability
@@ -32,7 +33,7 @@ class UserUpdate(UserBase):
 
 
 class UserInDBBase(UserBase):
-    user_id: int
+    user_id: UUID
     disabled: bool
     # assigned_events: int
     unavailabilities: List[Unavailability] = []

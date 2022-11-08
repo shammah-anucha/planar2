@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from .schema import User, UserCreate
 from . import model, utils, crud
 from ....app.modules.common.db.session import get_db
+from uuid import UUID
 
 # from ....app.modules.notification.crud import send_notification
 
@@ -29,7 +30,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(utils.get_
 
 # works
 @user_router.get("/users/{user_id}", response_model=User, tags=["users"])
-def read_user(user_id: int, db: Session = Depends(utils.get_db)):
+def read_user(user_id: UUID, db: Session = Depends(utils.get_db)):
     db_user = crud.user.get_user_id(db, id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -37,7 +38,7 @@ def read_user(user_id: int, db: Session = Depends(utils.get_db)):
 
 
 @user_router.delete("/users/{user_id}", tags=["users"])
-def delete_user(user_id: int, db: Session = Depends(utils.get_db)):
+def delete_user(user_id: UUID, db: Session = Depends(utils.get_db)):
     db.query(model.Users).filter(model.Users.user_id == user_id).delete()
     db.commit()
     return "Delete Successful"

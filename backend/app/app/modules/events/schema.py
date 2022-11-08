@@ -1,6 +1,7 @@
 from datetime import time, date
 
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class EventBase(BaseModel):
@@ -24,13 +25,13 @@ class EventUpdate(EventBase):
 
 class Volunteer(BaseModel):
     event_id: int
-    user_id: int
+    user_id: UUID
 
 
 class EventInDBBase(EventBase):
     event_id: int
-    # user_id: int
-    # volunteer: int
+    # user_id: UUID
+    # volunteer: UUID
 
     class Config:
         orm_mode = True

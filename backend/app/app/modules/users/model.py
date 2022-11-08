@@ -1,33 +1,36 @@
 from typing import TYPE_CHECKING
-
-from sqlalchemy import Boolean, Column, Integer, String, Date, Table
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Boolean, Column, Integer, String, Date
 from sqlalchemy.orm import relationship
 
 from ....app.modules.common.db.base_class import Base
 
 # from ....app.modules.events.model import event_volunteers
-
-from sqlalchemy import Column, Integer, Date, ForeignKey, Time
+import uuid
 
 if TYPE_CHECKING:
     from ....app.modules.unavailability.model import Unavailabilities
+
+import uuid
 
 
 class Users(Base):
 
     __tablename__ = "users"
 
-    user_id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
+    user_id = Column(
+        UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4
+    )
+    email = Column(String, unique=True)
     hashed_password = Column(String)
-    username = Column(String, index=True)
-    Firstname = Column(String, index=True)
-    Lastname = Column(String, index=True)
-    D_O_B = Column(Date, index=True)
-    nationality = Column(String, index=True)
-    country_of_residence = Column(String, index=True)
-    phone = Column(String, index=True)
-    country_code = Column(String, index=True)
+    username = Column(String)
+    Firstname = Column(String, nullable=False)
+    Lastname = Column(String, nullable=False)
+    D_O_B = Column(Date, nullable=False)
+    nationality = Column(String, nullable=False)
+    country_of_residence = Column(String, nullable=False)
+    phone = Column(String, nullable=False)
+    country_code = Column(String, nullable=False)
     disabled = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
     unavailabilities = relationship("Unavailabilities", back_populates="user")

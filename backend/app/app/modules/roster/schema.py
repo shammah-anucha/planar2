@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional
 from urllib import response
 from enum import Enum
+from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -27,7 +28,7 @@ class RosterUpdate(RosterBase):
 
 class Roster(RosterBase):
     roster_id: int
-    user_id: int
+    user_id: UUID
     event_id: int
     sender_id: int
     created_at: datetime
@@ -38,7 +39,7 @@ class Roster(RosterBase):
 
 class RosterInDB(RosterBase):
     roster_id: int
-    user_id: int
+    user_id: UUID
     event_id: int
     sender_id: int
     created_at: datetime

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class UserDepartmentBase(BaseModel):
@@ -15,7 +16,7 @@ class UserDepartmentUpdate(UserDepartmentBase):
 
 class UserDepartment(UserDepartmentBase):
     dept_id: int
-    user_id: int
+    user_id: UUID
 
     class Config:
         orm_mode = True

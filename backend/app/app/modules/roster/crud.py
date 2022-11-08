@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 from typing import List, Optional
 from fastapi import Depends, HTTPException, status
+from uuid import UUID
 
 from . import schema
 from backend.app.app.modules.messages.crud import assign_message
@@ -22,7 +23,7 @@ from ....app.modules.users.crud import user
 
 class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
     def get_volunteer(
-        self, db: Session, user_id: int, event_id: int
+        self, db: Session, user_id: UUID, event_id: int
     ) -> Optional[Roster]:
         return (
             db.query(Roster)
@@ -42,7 +43,7 @@ class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
         )
 
     def create_roster(
-        self, db: Session, *, sender_id: int, user_id: int, event_id: int
+        self, db: Session, *, sender_id: UUID, user_id: UUID, event_id: int
     ) -> Roster:
         volunteer = roster.get_volunteer(db=db, user_id=user_id, event_id=event_id)
         admin = (
@@ -95,7 +96,7 @@ class CRUDRoster(CRUDBase[Roster, schema.RosterCreate, schema.RosterUpdate]):
         self,
         roster_id: int,
         response: schema.RosterUpdate,
-        user_id: int,
+        user_id: UUID,
         db: Session = Depends(get_db),
     ) -> Roster:
         roster_query = db.query(Roster).filter(Roster.roster_id == roster_id)

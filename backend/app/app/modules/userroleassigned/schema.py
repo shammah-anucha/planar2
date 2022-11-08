@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class UserRoleAssignedBase(BaseModel):
@@ -14,7 +15,7 @@ class UserRoleAssignedUpdate(UserRoleAssignedBase):
 
 
 class UserRoleAssigned(UserRoleAssignedBase):
-    user_id: int
+    user_id: UUID
     userrole_id: int
     Firstname: str
     Lastname: str

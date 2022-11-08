@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from uuid import UUID
 from typing import List
 from ....app.modules.common.db.session import get_db
 from sqlalchemy.orm import Session
@@ -14,7 +15,7 @@ userroleassigned_router = APIRouter(
 @userroleassigned_router.post(
     "/{userrole_id}/users/{user_id}", response_model=UserRoleAssigned
 )
-def assign_userrole(user_id: int, userrole_id: int, db: Session = Depends(get_db)):
+def assign_userrole(user_id: UUID, userrole_id: int, db: Session = Depends(get_db)):
     return userrolesassigned.assign_userrole(
         user_id=user_id, userrole_id=userrole_id, db=db
     )
