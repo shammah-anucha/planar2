@@ -6,7 +6,7 @@ authors = ["Shammah Anucha <shammah.anucha@yahoo.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
 uvicorn = "^0.18.3"
@@ -26,4 +26,4 @@ sqlmodel = "^0.0.8"
 
 [build-system]
 requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+
