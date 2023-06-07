@@ -12,7 +12,8 @@ class Settings(BaseSettings):
 
     SQLALCHEMY_DATABASE_URL: Optional[
         PostgresDsn
-    ] = "postgresql://postgres:not-happening-again@localhost/planar_db"
+        # "postgresql://postgres:not-happening-again@localhost/planar_db"
+    ] = "postgresql+psycopg2://postgres:AkunnA25@localhost:5432"
 
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 

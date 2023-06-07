@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: 1633d2c6116c
+Revision ID: fece060b1c7d
 Revises: 
-Create Date: 2022-11-08 20:34:32.086889
+Create Date: 2023-04-27 00:35:33.307790
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '1633d2c6116c'
+revision = 'fece060b1c7d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,22 +26,24 @@ def upgrade() -> None:
     op.create_index(op.f('ix_departments_dept_id'), 'departments', ['dept_id'], unique=False)
     op.create_index(op.f('ix_departments_deptname'), 'departments', ['deptname'], unique=False)
     op.create_table('event',
-    sa.Column('event_id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=True),
-    sa.Column('time', sa.Time(), nullable=True),
+    sa.Column('event_id', postgresql.UUID(as_uuid=True), nullable=False),
+    sa.Column('title', sa.String(), nullable=True),
     sa.Column('location', sa.String(), nullable=True),
-    sa.Column('description', sa.String(), nullable=True),
-    sa.Column('date', sa.Date(), nullable=True),
+    sa.Column('location_url', sa.String(), nullable=True),
+    sa.Column('eventdate', sa.String(), nullable=True),
+    sa.Column('time', sa.String(), nullable=True),
+    sa.Column('imageUrl', sa.String(), nullable=True),
     sa.Column('host', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('event_id')
     )
-    op.create_index(op.f('ix_event_date'), 'event', ['date'], unique=False)
-    op.create_index(op.f('ix_event_description'), 'event', ['description'], unique=False)
     op.create_index(op.f('ix_event_event_id'), 'event', ['event_id'], unique=False)
+    op.create_index(op.f('ix_event_eventdate'), 'event', ['eventdate'], unique=False)
     op.create_index(op.f('ix_event_host'), 'event', ['host'], unique=False)
+    op.create_index(op.f('ix_event_imageUrl'), 'event', ['imageUrl'], unique=False)
     op.create_index(op.f('ix_event_location'), 'event', ['location'], unique=False)
-    op.create_index(op.f('ix_event_name'), 'event', ['name'], unique=False)
+    op.create_index(op.f('ix_event_location_url'), 'event', ['location_url'], unique=False)
     op.create_index(op.f('ix_event_time'), 'event', ['time'], unique=False)
+    op.create_index(op.f('ix_event_title'), 'event', ['title'], unique=False)
     op.create_table('userroles',
     sa.Column('userrole_id', sa.Integer(), nullable=False),
     sa.Column('role', sa.String(), nullable=True),
@@ -89,7 +91,7 @@ def upgrade() -> None:
     sa.Column('sender_id', postgresql.UUID(as_uuid=True), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('user_id', postgresql.UUID(), nullable=False),
-    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.Column('event_id', postgresql.UUID(as_uuid=True), nullable=False),
     sa.Column('Firstname', sa.String(), nullable=False),
     sa.Column('Lastname', sa.String(), nullable=False),
     sa.Column('response', sa.String(), nullable=True),
@@ -156,13 +158,14 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_userroles_userrole_id'), table_name='userroles')
     op.drop_index(op.f('ix_userroles_role'), table_name='userroles')
     op.drop_table('userroles')
+    op.drop_index(op.f('ix_event_title'), table_name='event')
     op.drop_index(op.f('ix_event_time'), table_name='event')
-    op.drop_index(op.f('ix_event_name'), table_name='event')
+    op.drop_index(op.f('ix_event_location_url'), table_name='event')
     op.drop_index(op.f('ix_event_location'), table_name='event')
+    op.drop_index(op.f('ix_event_imageUrl'), table_name='event')
     op.drop_index(op.f('ix_event_host'), table_name='event')
+    op.drop_index(op.f('ix_event_eventdate'), table_name='event')
     op.drop_index(op.f('ix_event_event_id'), table_name='event')
-    op.drop_index(op.f('ix_event_description'), table_name='event')
-    op.drop_index(op.f('ix_event_date'), table_name='event')
     op.drop_table('event')
     op.drop_index(op.f('ix_departments_deptname'), table_name='departments')
     op.drop_index(op.f('ix_departments_dept_id'), table_name='departments')

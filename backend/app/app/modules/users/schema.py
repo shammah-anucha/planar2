@@ -10,13 +10,13 @@ from ...modules.common.utils.country_code import CountryCodes
 
 class UserBase(BaseModel):
     email: EmailStr
-    username: Optional[str]
-    Firstname: str
-    Lastname: str
-    D_O_B: date
-    country_of_residence: Optional[str]
-    nationality: str
-    country_code: CountryCodes
+    # username: Optional[str]
+    firstname: str
+    lastname: str
+    dob: str
+    # country_of_residence: Optional[str]
+    # nationality: str
+    # country_code: CountryCodes
     phone: int
     is_admin: Optional[bool] = None
 

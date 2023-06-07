@@ -2,42 +2,59 @@ from datetime import timedelta
 from fastapi import Depends, HTTPException, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from . import crud, utils
+from . import crud, utils, schema
 from ....app.modules.common.utils.core.config import settings
 from ....app.modules.common.utils.core import security
 from ....app.modules.common.utils.token import Token
 from fastapi import FastAPI, Request
 
 
-login_router = APIRouter(
-    prefix="/login", tags=["authenticate"], dependencies=[Depends(utils.get_db)]
+register_router = APIRouter(
+    prefix="/register", tags=["authenticate"], dependencies=[Depends(utils.get_db)]
 )
 
 
 # works
-@login_router.post("/", response_model=Token)
+@register_router.post("/", response_model=Token)
 async def login_for_access_token(
+    *,
+    users_in: schema.UserCreate,
     request: Request,
     db: Session = Depends(utils.get_db),
 ):
-    data = await request.json()
-    user = crud.user.authenticate_user(
-        db, email=data.get("username"), password=data.get("password")
-    )
-    if not user:
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-    elif crud.user.disabled(user):
-        raise HTTPException(status_code=400, detail="Inactive user")
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = security.create_access_token(
-        user.user_id, expires_delta=access_token_expires
-    )
+    # data = await request.json()
+    user = crud.user.get_user_by_email(db, email=users_in.email)
+    # user = crud.user.authenticate_user(
+    #     db, email=data.get("username"), password=data.get("password")
+    # )
+    # if not user:
+    #     raise HTTPException(status_code=400, detail="Incorrect email or password")
+    # elif crud.user.disabled(user):
+    #     raise HTTPException(status_code=400, detail="Inactive user")
+    if user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    else:
+        access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = security.create_access_token(
+            user.user_id, expires_delta=access_token_expires
+        )
+
+        crud.user.create(db=db, obj_in=users_in)
 
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "user_id": user.user_id,
     }
+
+
+# @user_router.post("/users/{user_id}", response_model=User, tags=["users"])
+# def create_user(*, users_in: UserCreate, db: Session = Depends(utils.get_db)) -> Any:
+#     """Create new user."""
+#     user = crud.user.get_user_by_email(db, email=users_in.email)
+#     if user:
+#         raise HTTPException(status_code=400, detail="Email already registered")
+#     return crud.user.create(db=db, obj_in=users_in)
 
 
 # @router.post("/login/test-token", response_model=schemas.User)

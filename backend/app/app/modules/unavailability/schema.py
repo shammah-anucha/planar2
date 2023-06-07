@@ -1,11 +1,14 @@
 from datetime import date
+from uuid import UUID
 
 from pydantic import BaseModel
 
 
 class UnavailabilityBase(BaseModel):
-    start_date: date
-    end_date: date
+    startdate: date
+    enddate: date
+    reason: str
+    user_id: UUID
 
 
 class Unavailability(UnavailabilityBase):

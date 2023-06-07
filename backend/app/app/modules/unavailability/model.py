@@ -16,7 +16,8 @@ class Unavailabilities(Base):
     __tablename__ = "unavailabilities"
 
     aval_id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(UUID, ForeignKey("users.user_id"), nullable=False)
-    start_date = Column(Date, index=True)
-    end_date = Column(Date, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.user_id"), nullable=False)
+    startdate = Column(Date, index=True)
+    enddate = Column(Date, index=True)
+    reason = Column(String, index=True)  # migrate
     user = relationship("Users", back_populates="unavailabilities")

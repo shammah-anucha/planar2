@@ -15,7 +15,6 @@ import uuid
 
 
 class Users(Base):
-
     __tablename__ = "users"
 
     user_id = Column(
@@ -23,14 +22,14 @@ class Users(Base):
     )
     email = Column(String, unique=True)
     hashed_password = Column(String)
-    username = Column(String)
-    Firstname = Column(String, nullable=False)
-    Lastname = Column(String, nullable=False)
-    D_O_B = Column(Date, nullable=False)
-    nationality = Column(String, nullable=False)
-    country_of_residence = Column(String, nullable=False)
+    # username = Column(String)
+    firstname = Column(String, nullable=False)
+    lastname = Column(String, nullable=False)
+    dob = Column(String, nullable=False)
+    # nationality = Column(String, nullable=False)
+    # country_of_residence = Column(String, nullable=False)
     phone = Column(String, nullable=False)
-    country_code = Column(String, nullable=False)
+    # country_code = Column(String, nullable=False)
     disabled = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
     unavailabilities = relationship("Unavailabilities", back_populates="user")
