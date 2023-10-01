@@ -1,8 +1,8 @@
-"""unavail uuid
+"""roster_short
 
-Revision ID: a13519bd9411
-Revises: de64afe0c347
-Create Date: 2023-06-04 21:42:50.789273
+Revision ID: 8b08745858f5
+Revises: 7b4a25c87802
+Create Date: 2023-06-07 16:39:37.937040
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a13519bd9411'
-down_revision = 'de64afe0c347'
+revision = '8b08745858f5'
+down_revision = '7b4a25c87802'
 branch_labels = None
 depends_on = None
 

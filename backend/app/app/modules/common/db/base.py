@@ -11,6 +11,7 @@ from .....app.modules.userdepartment import model
 from .....app.modules.users import model
 from .....app.modules.userrole import model
 from .....app.modules.userroleassigned import model
+from .....app.modules.roster_short import model
 
 
 # from .....app.modules.events.associationtable import model

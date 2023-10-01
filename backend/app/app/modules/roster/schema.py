@@ -22,15 +22,24 @@ class RosterCreate(RosterBase):
 
 
 class RosterUpdate(RosterBase):
-    response: str
-    response_date: datetime
+    user_id: UUID
+    event_id: UUID
+    sender_id: UUID
+    userrole_id: Optional[int]
+    role: Optional[str]
+    created_at: datetime
+    Firstname: str
+    Lastname: str
+    response: Optional[str]
+    response_date: Optional[datetime]
 
 
 class Roster(RosterBase):
     roster_id: int
     user_id: UUID
-    event_id: int
-    sender_id: int
+    event_id: UUID
+    sender_id: UUID
+    userrole_id: Optional[int]
     created_at: datetime
 
     class Config:
@@ -40,8 +49,10 @@ class Roster(RosterBase):
 class RosterInDB(RosterBase):
     roster_id: int
     user_id: UUID
-    event_id: int
-    sender_id: int
+    event_id: UUID
+    sender_id: UUID
+    userrole_id: Optional[int]
+    role: Optional[str]
     created_at: datetime
     Firstname: str
     Lastname: str

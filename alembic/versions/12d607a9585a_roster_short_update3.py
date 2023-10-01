@@ -1,8 +1,8 @@
-"""User
+"""roster_short update3
 
-Revision ID: 4b1db1b6c8a6
-Revises: ddc5ecfb9d42
-Create Date: 2023-05-12 00:41:25.728870
+Revision ID: 12d607a9585a
+Revises: f789c4b09256
+Create Date: 2023-06-07 17:31:08.393582
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4b1db1b6c8a6'
-down_revision = 'ddc5ecfb9d42'
+revision = '12d607a9585a'
+down_revision = 'f789c4b09256'
 branch_labels = None
 depends_on = None
 

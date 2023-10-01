@@ -19,26 +19,27 @@ roster_router = APIRouter(
 @roster_router.post("/", response_model=Roster)
 def create_roster(
     userid: UUID,
-    eventid: int,
-    sender_id: int,
+    eventid: UUID,
+    sender_id: UUID,
+    userrole_id: int,
     db: Session = Depends(get_db),
 ):
-
     return roster.create_roster(
-        db=db, sender_id=sender_id, event_id=eventid, user_id=userid
+        db=db,
+        sender_id=sender_id,
+        event_id=eventid,
+        user_id=userid,
+        userrole_id=userrole_id,
     )
 
 
-@roster_router.put("/", response_model=Roster)
+@roster_router.put("/{roster_id}", response_model=Roster)
 def volunteer_response(
     response: RosterUpdate,
     roster_id: int,
-    user_id: UUID,
     db: Session = Depends(get_db),
 ):
-    return roster.volunteer_response(
-        db=db, response=response, roster_id=roster_id, user_id=user_id
-    )
+    return roster.volunteer_response(db=db, response=response, roster_id=roster_id)
 
 
 @roster_router.get("/", response_model=List[RosterInDB])
